@@ -26,7 +26,7 @@ export const auth = betterAuth({
       role: {
         type: 'string',
         enum: ['admin', 'jury', 'participant'],
-        required: true,
+        required: false,
       },
     },
   },

@@ -1,5 +1,5 @@
 {
-  "id": "e9ef3dab-ceac-4f95-9569-2fb102aa51ca",
+  "id": "dd96f15d-8c43-447e-ab36-5ef91ddb0d42",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -220,11 +220,13 @@
           "primaryKey": false,
           "notNull": true
         },
-        "image": {
-          "name": "image",
-          "type": "text",
+        "role": {
+          "name": "role",
+          "type": "role",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'participant'"
         },
         "created_at": {
           "name": "created_at",
@@ -305,7 +307,17 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": [
+        "admin",
+        "jury",
+        "participant"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

@@ -1,4 +1,6 @@
-import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+
+export const userRole = pgEnum('role', ['admin', 'jury', 'participant']);
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -7,6 +9,7 @@ export const user = pgTable('user', {
   emailVerified: boolean('email_verified')
     .$defaultFn(() => false)
     .notNull(),
+  role: userRole('role').notNull().default('participant'),
   createdAt: timestamp('created_at')
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
