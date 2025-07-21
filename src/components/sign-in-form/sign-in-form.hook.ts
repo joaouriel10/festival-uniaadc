@@ -40,6 +40,19 @@ export function useSignInForm() {
       },
       {
         onError: (ctx) => {
+          if (ctx.error.code === 'EMAIL_NOT_VERIFIED') {
+            toast.error(
+              'O seu usuario não tem acesso a este sistema. Por favor, contate o administrador.',
+              {
+                style: {
+                  background: 'var(--destructive)',
+                  borderColor: 'var(--destructive)',
+                  color: 'var(--background)',
+                },
+              }
+            );
+            return;
+          }
           toast.error(ctx.error.message);
         },
         onSuccess: () => {

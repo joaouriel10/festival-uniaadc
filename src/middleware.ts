@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
   const body = (await session.json()) as Session;
 
   const isPublicRoute =
-    request.nextUrl.pathname.startsWith('/sign-in') ||
+    request.nextUrl.pathname.startsWith('/sign-up') ||
     request.nextUrl.pathname === '/';
 
   if (body && isPublicRoute) {
