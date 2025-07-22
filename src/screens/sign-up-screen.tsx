@@ -24,12 +24,10 @@ export function SignUpScreen() {
             transition={{ duration: 0.3 }}
           >
             FESTIVAL
-            {/* @ts-expect-error */}
             <span className="block text-festival-coral">UNIAADC 2K25</span>
           </motion.h1>
           <motion.span
             animate={{ opacity: 1, filter: 'blur(0px)' }}
-            // @ts-expect-error
             className="font-bold font-heading text-1xl text-white leading-tight lg:text-2xl"
             initial={{ opacity: 0, filter: 'blur(15px)' }}
             transition={{ duration: 0.3, delay: 0.2 }}

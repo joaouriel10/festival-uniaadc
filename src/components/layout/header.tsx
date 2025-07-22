@@ -97,9 +97,7 @@ export function Header() {
                 variant="ghost"
               >
                 <User className="mr-2 h-4 w-4" />
-                {/* @ts-expect-error */}
                 <span className="hidden lg:inline">{user?.name}</span>
-                {/* @ts-expect-error */}
                 <span className="lg:hidden">Perfil</span>
               </Button>
             </DropdownMenuTrigger>
