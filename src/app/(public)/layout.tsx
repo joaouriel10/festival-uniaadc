@@ -8,7 +8,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-festival-burgundy via-festival-brown to-festival-dark p-4">
+    <div className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden bg-gradient-to-br from-festival-burgundy via-festival-brown to-festival-dark">
       <div className="absolute inset-0 flex items-center justify-center opacity-5">
         <Image
           alt="Revestidos Background"
@@ -17,7 +17,7 @@ export default function AuthLayout({
         />
       </div>
 
-      {children}
+      <div className="flex flex-1 items-center justify-center">{children}</div>
 
       <Footer />
     </div>
