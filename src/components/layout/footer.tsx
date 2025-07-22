@@ -14,7 +14,7 @@ export function Footer() {
       initial={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.2, delay: 0.3, ease: 'easeOut' }}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between lg:flex-row">
         <motion.div
           className="flex items-center gap-4"
           transition={{ type: 'spring', stiffness: 300 }}
