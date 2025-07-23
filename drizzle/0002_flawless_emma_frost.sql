@@ -1,0 +1,2 @@
+ALTER TABLE "user" ADD COLUMN "regional_id" text;--> statement-breakpoint
+ALTER TABLE "user" ADD CONSTRAINT "user_regional_id_regional_id_fk" FOREIGN KEY ("regional_id") REFERENCES "public"."regional"("id") ON DELETE set null ON UPDATE no action;

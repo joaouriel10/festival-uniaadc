@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import revestidosBg from '@/assets/logo-revestidos-preto.webp';
-import { Footer } from '@/components/layout/footer';
+import revestidosBg from '@/core/assets/logo-revestidos-preto.webp';
+import { Footer } from '@/core/components/layout/footer';
 
 export default function AuthLayout({
   children,

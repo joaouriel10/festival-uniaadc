@@ -8,6 +8,34 @@
       "when": 1753134544559,
       "tag": "0000_odd_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1753289615258,
+      "tag": "0001_fuzzy_blue_blade",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1753290747667,
+      "tag": "0002_flawless_emma_frost",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1753290773003,
+      "tag": "0003_fine_bullseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1753290791295,
+      "tag": "0004_needy_dracula",
+      "breakpoints": true
     }
   ]
 }
