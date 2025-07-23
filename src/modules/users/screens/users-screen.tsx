@@ -5,6 +5,7 @@ import {
   Gavel,
   Loader,
   Shield,
+  User,
   Users,
   XCircle,
 } from 'lucide-react';
@@ -34,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/core/components/ui/table';
+import { queryClient } from '@/infra/lib/react-query';
 import { useUsers } from '@/modules/users/queries/use-users';
 import { approveUser, disapproveUser } from '../actions';
 
@@ -47,13 +49,17 @@ export function UsersScreen() {
   const totalPages = Math.ceil((data?.totalCount || 0) / pageSize);
 
   const handleApproveUser = async (userId: string) => {
-    // TODO: invalidar queries
     await approveUser(userId);
+    queryClient.invalidateQueries({
+      queryKey: ['users', currentPage, pageSize],
+    });
   };
 
   const handleDisapproveUser = async (userId: string) => {
-    // TODO: invalidar queries
     await disapproveUser(userId);
+    queryClient.invalidateQueries({
+      queryKey: ['users', currentPage, pageSize],
+    });
   };
 
   const handlePreviousPage = () => {
@@ -77,7 +83,7 @@ export function UsersScreen() {
             Admin
           </Badge>
         );
-      case 'jurado':
+      case 'jury':
         return (
           <Badge className="bg-purple-100 text-purple-800">
             <Gavel className="mr-1 h-3 w-3" />
@@ -85,14 +91,19 @@ export function UsersScreen() {
           </Badge>
         );
       default:
-        return <Badge variant="outline">{role}</Badge>;
+        return (
+          <Badge className="bg-amber-200 text-black" variant="outline">
+            <User className="mr-1 h-3 w-3" />
+            Participante
+          </Badge>
+        );
     }
   };
 
   if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <Loader className="h-10 w-10 animate-spin text-festival-brown" />
+        <Loader className="h-10 w-10 animate-spin text-white" />
       </div>
     );
   }

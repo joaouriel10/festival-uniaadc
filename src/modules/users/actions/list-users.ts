@@ -44,7 +44,7 @@ export async function getUserList({
     },
     limit: pageSize,
     offset,
-    orderBy: (userTable, { desc }) => [desc(userTable.createdAt)],
+    orderBy: (userTable, { asc }) => [asc(userTable.createdAt)],
   });
 
   const [totalCountResult] = await db
