@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/core/components/ui/slider.tss"  ],
   "exclude": [
     "node_modules"
   ]

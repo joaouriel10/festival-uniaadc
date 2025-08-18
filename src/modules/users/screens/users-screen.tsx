@@ -100,135 +100,103 @@ export function UsersScreen() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <Loader className="h-10 w-10 animate-spin text-white" />
-      </div>
-    );
-  }
-
   return (
-    <main className="flex h-full w-full items-center justify-center">
-      <Card className="h-full max-h-[550px] w-full max-w-6xl border-0 bg-white/95 shadow-xl backdrop-blur-sm">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-festival-brown">
-            <Users className="h-5 w-5" />
-            Gerenciamento de Usuários
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* Filtros */}
-          <div className="mb-6 flex flex-col gap-4 md:flex-row">
-            {/* <Select onValueChange={setFiltroStatus} value={filtroStatus}>
-              <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filtrar por status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos os Status</SelectItem>
-                <SelectItem value="pendente">Pendente</SelectItem>
-                <SelectItem value="aprovado">Aprovado</SelectItem>
-                <SelectItem value="rejeitado">Rejeitado</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select onValueChange={setFiltroRole} value={filtroRole}>
-              <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filtrar por role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todas as Roles</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="jurado">Jurado</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select
-              onValueChange={setFiltroTipoJurado}
-              value={filtroTipoJurado}
-            >
-              <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filtrar por tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos os Tipos</SelectItem>
-                <SelectItem value="voz">Jurado de Voz</SelectItem>
-                <SelectItem value="musica">Jurado de Música</SelectItem>
-                <SelectItem value="null">Sem Tipo</SelectItem>
-              </SelectContent>
-            </Select> */}
-          </div>
-
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nome</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Data Cadastro</TableHead>
-                  <TableHead>Ações</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="font-medium">{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{getRoleBadge(user.role)}</TableCell>
-                    <TableCell>
-                      {new Date(user.createdAt).toLocaleDateString('pt-BR')}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {!user.isApproved && (
-                          <>
-                            <Button
-                              className="bg-green-600 hover:bg-green-700"
-                              onClick={() => handleApproveUser(user.id)}
-                              size="sm"
-                            >
-                              <CheckCircle className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              onClick={() => handleDisapproveUser(user.id)}
-                              size="sm"
-                              variant="destructive"
-                            >
-                              <XCircle className="h-4 w-4" />
-                            </Button>
-                          </>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  disabled={currentPage === 1}
-                  onClick={handlePreviousPage}
-                />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink className="cursor-not-allowed opacity-50">
-                  {currentPage}
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext
-                  disabled={totalPages === currentPage}
-                  onClick={handleNextPage}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </CardFooter>
-      </Card>
-    </main>
+    <div className="relative z-10 mx-auto max-w-7xl p-4">
+      <div className="mb-8 text-center">
+        <h1 className="mb-2 font-bold text-4xl text-white lg:text-5xl">
+          GERENCIAMENTO DE USUÁRIOS
+        </h1>
+      </div>
+      <div className="relative z-10 mx-auto max-w-6xl p-4">
+        <Card className="h-full max-h-[550px] w-full max-w-6xl border-0 bg-white/95 shadow-xl backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-festival-brown">
+              <Users className="h-5 w-5" />
+              Gerenciamento de Usuários
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              {isLoading ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <Loader className="h-10 w-10 animate-spin text-black" />
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nome</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Data Cadastro</TableHead>
+                      <TableHead>Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {data?.users.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell className="font-medium">
+                          {user.name}
+                        </TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{getRoleBadge(user.role)}</TableCell>
+                        <TableCell>
+                          {new Date(user.createdAt).toLocaleDateString('pt-BR')}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-2">
+                            {!user.isApproved && (
+                              <>
+                                <Button
+                                  className="bg-green-600 hover:bg-green-700"
+                                  onClick={() => handleApproveUser(user.id)}
+                                  size="sm"
+                                >
+                                  <CheckCircle className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  onClick={() => handleDisapproveUser(user.id)}
+                                  size="sm"
+                                  variant="destructive"
+                                >
+                                  <XCircle className="h-4 w-4" />
+                                </Button>
+                              </>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    disabled={currentPage === 1}
+                    onClick={handlePreviousPage}
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink className="cursor-not-allowed opacity-50">
+                    {currentPage}
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext
+                    disabled={totalPages === currentPage}
+                    onClick={handleNextPage}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   );
 }
