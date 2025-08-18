@@ -42,6 +42,7 @@ export function useSignUpForm() {
         email,
         password,
         callbackURL: '/',
+        role: 'participant',
       },
       {
         onError: (ctx) => {

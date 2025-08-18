@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { getUserList } from '../actions';
+import { getUserList } from '@/modules/users/actions';
 
 export interface UseUsersParams {
   page: number;
