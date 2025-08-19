@@ -2,7 +2,7 @@ import { RatingForm } from '../forms/rating-form';
 
 export function RatingScreen() {
   return (
-    <div className="relative z-10 mx-auto max-w-6xl p-4">
+    <div className="relative mx-auto max-w-6xl p-4">
       <div className="mb-8 text-center">
         <h1 className="mb-2 font-bold text-4xl text-white lg:text-5xl">
           AVALIAÇÃO DE MÚSICAS
