@@ -6,7 +6,6 @@ export async function applySecurityHeaders(response: NextResponse) {
   const cspHeader = `
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval';
-    script-src-elem 'self' 'nonce-${nonce}';
     style-src 'self' 'unsafe-inline';
     img-src 'self' data: blob: https://images.unsplash.com;
     font-src 'self' data:;
