@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  return response ;
+  return response;
 }
 
 // NOTES: Aqui serão as rotas que serão protegidas pelo middleware

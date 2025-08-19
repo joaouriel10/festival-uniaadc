@@ -101,13 +101,13 @@ export function UsersScreen() {
   };
 
   return (
-    <div className="relative z-10 mx-auto max-w-7xl p-4">
+    <div className="relative mx-auto max-w-7xl p-4">
       <div className="mb-8 text-center">
         <h1 className="mb-2 font-bold text-4xl text-white lg:text-5xl">
           GERENCIAMENTO DE USUÁRIOS
         </h1>
       </div>
-      <div className="relative z-10 mx-auto max-w-6xl p-4">
+      <div className="relative mx-auto max-w-6xl p-4">
         <Card className="h-full max-h-[550px] w-full max-w-6xl border-0 bg-white/95 shadow-xl backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-festival-brown">
