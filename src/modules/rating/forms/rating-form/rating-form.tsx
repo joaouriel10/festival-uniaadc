@@ -54,7 +54,7 @@ export function RatingForm() {
 
   return (
     <FormProvider {...form}>
-      <form className="z-50" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <motion.div
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
