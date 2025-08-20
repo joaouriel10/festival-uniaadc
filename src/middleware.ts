@@ -15,7 +15,9 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const body = (await session.json()) as Session;
+  const body = (await session.json()) as Session & {
+    role: 'admin' | 'jury' | 'participant';
+  };
 
   const isPublicRoute =
     request.nextUrl.pathname.startsWith('/sign-up') ||
@@ -25,6 +27,19 @@ export async function middleware(request: NextRequest) {
 
   if (body && isPublicRoute) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  if (body && !isPublicRoute) {
+    if (
+      body.role === 'admin' &&
+      request.nextUrl.pathname.startsWith('/rating')
+    ) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+
+    if (!request.nextUrl.pathname.startsWith('/rating')) {
+      return NextResponse.redirect(new URL('/rating', request.url));
+    }
   }
 
   if (!body && !isPublicRoute) {

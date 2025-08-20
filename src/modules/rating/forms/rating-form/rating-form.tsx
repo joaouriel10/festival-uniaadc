@@ -50,8 +50,6 @@ export function RatingForm() {
     formState: { errors, isSubmitting },
   } = form;
 
-  console.log(errors);
-
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>

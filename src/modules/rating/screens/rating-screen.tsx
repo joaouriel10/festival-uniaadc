@@ -1,6 +1,14 @@
+import { redirect } from 'next/navigation';
+import { getServerSession } from '@/infra/lib/get-authenticated-user';
 import { RatingForm } from '../forms/rating-form';
 
-export function RatingScreen() {
+export async function RatingScreen() {
+  const { sessionFromServer } = await getServerSession();
+
+  if (sessionFromServer?.user.role !== 'jury') {
+    redirect('/dashboard');
+  }
+
   return (
     <div className="relative mx-auto max-w-6xl p-4">
       <div className="mb-8 text-center">

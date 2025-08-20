@@ -1,10 +1,16 @@
-'use client';
-
 import { Award, Medal, Trophy } from 'lucide-react';
+import { redirect } from 'next/navigation';
 import { Badge } from '@/core/components/ui/badge';
 import { Card, CardContent } from '@/core/components/ui/card';
+import { getServerSession } from '@/infra/lib/get-authenticated-user';
 
-export function DashboardScreen() {
+export async function DashboardScreen() {
+  const { sessionFromServer } = await getServerSession();
+
+  if (sessionFromServer?.user.role !== 'admin') {
+    redirect('/rating');
+  }
+
   return (
     <div className="relative z-10 mx-auto max-w-6xl p-4">
       <h1 className="mb-2 font-bold text-4xl text-white lg:text-5xl">
