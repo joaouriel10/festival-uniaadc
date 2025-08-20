@@ -1,7 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import z from 'zod';
+import { queryClient } from '@/infra/lib/react-query';
+import { updateRating } from '../../actions/update-rating';
+import { getDefaultValues } from '../../utils/get-default-values-from-rating-form';
 
 const ratingSchema = z.object({
   regional: z.string().min(1, 'Selecione uma avaliação'),
@@ -37,42 +41,22 @@ const ratingSchema = z.object({
 
 export type RatingFormData = z.infer<typeof ratingSchema>;
 
-export function useRatingForm() {
+export interface UseRatingFormProps {
+  userId: string;
+  ratingId: string;
+  initialData?: Partial<RatingFormData>;
+}
+
+export function useRatingForm({
+  userId,
+  ratingId,
+  initialData,
+}: UseRatingFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<RatingFormData>({
     resolver: zodResolver(ratingSchema),
-    defaultValues: {
-      regional: '',
-      regionalMusic: {
-        choralCategory: {
-          vocalTuning: 5.0,
-          vocalHarmony: 5.0,
-          technicalLevel: 5.0,
-          performanceCreatividade: 5.0,
-        },
-        instrumental: {
-          musicTechnicalLevel: 5.0,
-          arrangementCoherence: 5.0,
-          overallPerformance: 5.0,
-        },
-        observations: '',
-      },
-      originalMusic: {
-        choralCategory: {
-          vocalTuning: 5.0,
-          vocalHarmony: 5.0,
-          technicalLevel: 5.0,
-          performanceCreatividade: 5.0,
-        },
-        instrumental: {
-          musicTechnicalLevel: 5.0,
-          arrangementCoherence: 5.0,
-          overallPerformance: 5.0,
-        },
-        observations: '',
-      },
-    },
+    defaultValues: getDefaultValues(initialData),
   });
 
   const watchedRegional = form.watch('regional');
@@ -80,15 +64,23 @@ export function useRatingForm() {
   const onSubmit = async (data: RatingFormData) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert(`Avaliação da ${data.regional} enviada com sucesso!`);
+      await updateRating({
+        id: data.regional,
+        regionalMusic: data.regionalMusic,
+        originalMusic: data.originalMusic,
+      });
+      queryClient.invalidateQueries({ queryKey: [`evaluations-${userId}`] });
+      toast.success('Avaliação atualizada com sucesso!');
       form.reset();
-    } catch {
-      alert('Erro ao enviar avaliação. Tente novamente.');
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+      toast.error('Erro ao enviar avaliação. Tente novamente.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { onSubmit, watchedRegional, isLoading, form };
+  const isEditMode = Boolean(ratingId);
+
+  return { onSubmit, watchedRegional, isLoading, form, isEditMode };
 }

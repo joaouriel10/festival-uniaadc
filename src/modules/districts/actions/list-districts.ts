@@ -4,22 +4,22 @@ import { sql } from 'drizzle-orm';
 import { db } from '@/infra/database';
 import { regional } from '@/infra/database/schemas/others';
 
-export interface DistrictsListItem {
+export type DistrictsListItem = {
   id: string;
   name: string;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-export interface DistrictsListResponse {
+export type DistrictsListResponse = {
   districts: DistrictsListItem[];
   totalCount: number;
-}
+};
 
-export interface GetDistrictsListParams {
+export type GetDistrictsListParams = {
   page: number;
   pageSize?: number;
-}
+};
 
 export async function getDistricts({
   page,

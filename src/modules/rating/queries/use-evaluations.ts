@@ -1,10 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getEvaluations } from '../actions/list-evaluations';
 
-export interface UseEvaluationsParams {
+export type UseEvaluationsParams = {
   page: number;
   pageSize?: number;
-}
+};
 
 export function useEvaluations({ page, pageSize }: UseEvaluationsParams) {
   return useQuery({

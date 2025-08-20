@@ -1,10 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getUserList } from '../actions';
 
-export interface UseUsersParams {
+export type UseUsersParams = {
   page: number;
   pageSize?: number;
-}
+};
 
 export function useUsers({ page, pageSize }: UseUsersParams) {
   return useQuery({

@@ -16,10 +16,10 @@ const roleBadgeVariants = cva('inline-flex items-center gap-1', {
   },
 });
 
-export interface RoleBadgeProps extends VariantProps<typeof roleBadgeVariants> {
+export type RoleBadgeProps = VariantProps<typeof roleBadgeVariants> & {
   role: 'admin' | 'jury' | 'participant';
   className?: string;
-}
+};
 
 const roleConfig = {
   admin: {

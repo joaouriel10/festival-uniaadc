@@ -4,19 +4,19 @@ import { eq, sql } from 'drizzle-orm';
 import { db } from '@/infra/database';
 import { user } from '@/infra/database/schemas/auth';
 
-export interface JuriesListItem {
+export type JuriesListItem = {
   id: string;
   name: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface JuriesListResponse {
+export type JuriesListResponse = {
   juries: JuriesListItem[];
   totalCount: number;
 }
 
-export interface GetJuriesListParams {
+export type GetJuriesListParams = {
   page: number;
   pageSize?: number;
 }

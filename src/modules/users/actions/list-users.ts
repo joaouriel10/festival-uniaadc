@@ -4,7 +4,7 @@ import { sql } from 'drizzle-orm';
 import { db } from '@/infra/database';
 import { user } from '@/infra/database/schemas/auth';
 
-export interface UserListItem {
+export type UserListItem = {
   id: string;
   name: string;
   email: string;
@@ -14,12 +14,12 @@ export interface UserListItem {
   createdAt: Date;
 }
 
-export interface UserListResponse {
+export type UserListResponse = {
   users: UserListItem[];
   totalCount: number;
 }
 
-export interface GetUserListParams {
+export type GetUserListParams = {
   page: number;
   pageSize?: number;
 }

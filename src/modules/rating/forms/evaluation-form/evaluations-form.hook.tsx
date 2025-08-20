@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 import { queryClient } from '@/infra/lib/react-query';
-import { linkEvaluation } from '../../actions';
+import { vinculeEvaluation } from '../../actions';
 
 const evaluationSchema = z.object({
   districtId: z.string().min(1, 'Selecione uma regional'),
@@ -29,7 +29,7 @@ export function useEvaluationForm({ onClose }: UseEvaluationFormProps) {
 
   const onSubmit = async (data: EvaluationFormData) => {
     try {
-      await linkEvaluation(data);
+      await vinculeEvaluation(data);
       toast.success('Avaliação vinculada com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['evaluations'] });
       onClose();

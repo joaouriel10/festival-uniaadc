@@ -3,15 +3,15 @@
 import { db } from '@/infra/database';
 import { schema } from '@/infra/database/schema';
 
-type LinkEvaluationData = {
+type VinculeEvaluationData = {
   districtId: string;
   juryIds: string[];
 };
 
-export async function linkEvaluation({
+export async function vinculeEvaluation({
   districtId,
   juryIds,
-}: LinkEvaluationData) {
+}: VinculeEvaluationData) {
   await Promise.all(
     juryIds.map(async (juryId) => {
       await db.insert(schema.rating).values({

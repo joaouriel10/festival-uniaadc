@@ -1,2 +1,3 @@
-export * from './link-evaluations';
+export * from './list-evaluations';
 export * from './list-juries';
+export * from './vincule-evaluations';

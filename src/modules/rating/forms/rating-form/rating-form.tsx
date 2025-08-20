@@ -1,7 +1,6 @@
 'use client';
 
 import { MapPin, Music, Star, Users, Volume2 } from 'lucide-react';
-import { motion } from 'motion/react';
 import { Controller, FormProvider } from 'react-hook-form';
 import { SliderComponent } from '@/core/components/slider-component';
 import { Button } from '@/core/components/ui/button';
@@ -26,23 +25,25 @@ import {
   TabsTrigger,
 } from '@/core/components/ui/tabs';
 import { Textarea } from '@/core/components/ui/textarea';
+import { useGetRatingsByUserId } from '../../queries/use-ratings';
 import { useRatingForm } from './rating-form.hook';
 
-const avaliacoesDisponiveis = [
-  'Regional Curitiba Norte - Avaliação 1',
-  'Regional Curitiba Sul - Avaliação 2',
-  'Regional Curitiba Leste - Avaliação 3',
-  'Regional Curitiba Oeste - Avaliação 4',
-  'Regional Região Metropolitana - Avaliação 5',
-  'Regional Campos Gerais - Avaliação 6',
-  'Regional Norte Pioneiro - Avaliação 7',
-  'Regional Noroeste - Avaliação 8',
-  'Regional Oeste - Avaliação 9',
-  'Regional Sudoeste - Avaliação 10',
-];
+type RatingFormProps = {
+  userId: string;
+};
 
-export function RatingForm() {
-  const { form, isLoading, onSubmit, watchedRegional } = useRatingForm();
+export function RatingForm({ userId }: RatingFormProps) {
+  const { form, isLoading, onSubmit, watchedRegional } = useRatingForm({
+    userId,
+    ratingId: '',
+    initialData: {},
+  });
+
+  const { data } = useGetRatingsByUserId({
+    userId,
+    page: 1,
+    pageSize: 10,
+  });
 
   const {
     handleSubmit,
@@ -52,13 +53,8 @@ export function RatingForm() {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+      <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-8">
           <Card className="border-0 bg-white/95 shadow-xl backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-festival-brown">
@@ -74,14 +70,18 @@ export function RatingForm() {
                 control={control}
                 name="regional"
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select
+                    disabled={isLoading || !data?.ratings.length}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
                     <SelectTrigger className="w-full border-gray-300 focus:border-festival-coral focus:ring-festival-coral">
                       <SelectValue placeholder="Selecione uma avaliação..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {avaliacoesDisponiveis.map((regional) => (
-                        <SelectItem key={regional} value={regional}>
-                          {regional}
+                      {data?.ratings?.map((rating) => (
+                        <SelectItem key={rating.id} value={rating.id}>
+                          {rating.regionalName}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -95,7 +95,7 @@ export function RatingForm() {
               )}
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
         <Tabs className="w-full" defaultValue="musica1">
           <TabsList className="mb-6 grid w-full grid-cols-2 bg-festival-light">
@@ -116,12 +116,7 @@ export function RatingForm() {
           </TabsList>
 
           <TabsContent value="musica1">
-            <motion.div
-              animate={{ opacity: 1, y: 0 }}
-              className="grid gap-6 lg:grid-cols-2"
-              initial={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.6 }}
-            >
+            <div className="grid gap-6 lg:grid-cols-2">
               <Card className="border-0 bg-white shadow-xl backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-festival-brown">
@@ -224,16 +219,11 @@ export function RatingForm() {
                   />
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           </TabsContent>
 
           <TabsContent value="musica2">
-            <motion.div
-              animate={{ opacity: 1, y: 0 }}
-              className="grid gap-6 lg:grid-cols-2"
-              initial={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.6 }}
-            >
+            <div className="grid gap-6 lg:grid-cols-2">
               <Card className="border-0 bg-white shadow-xl backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-festival-brown">
@@ -335,7 +325,7 @@ export function RatingForm() {
                   />
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           </TabsContent>
         </Tabs>
 

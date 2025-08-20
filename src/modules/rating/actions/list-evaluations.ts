@@ -5,7 +5,7 @@ import { db } from '@/infra/database';
 import { user } from '@/infra/database/schemas/auth';
 import { rating, regional } from '@/infra/database/schemas/others';
 
-export interface EvaluationsListItem {
+export type EvaluationsListItem = {
   id: string;
   regionalName: string;
   juries: {
@@ -14,17 +14,17 @@ export interface EvaluationsListItem {
   }[];
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-export interface EvaluationsListResponse {
+export type EvaluationsListResponse = {
   evaluations: EvaluationsListItem[];
   totalCount: number;
-}
+};
 
-export interface GetEvaluationsListParams {
+export type GetEvaluationsListParams = {
   page: number;
   pageSize?: number;
-}
+};
 
 export async function getEvaluations({
   page,
