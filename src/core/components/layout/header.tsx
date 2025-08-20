@@ -2,6 +2,7 @@
 
 import {
   BarChart3,
+  LinkIcon,
   LogOut,
   MapPin,
   Menu,
@@ -59,7 +60,7 @@ export function Header() {
           'slide-in-from-top-100 fade-in animate-in fill-mode-both delay-150 duration-500 ease-out',
         ])}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3 sm:gap-4">
             <Image
               alt="Logo UNIAADC"
@@ -109,6 +110,16 @@ export function Header() {
                   <Link href="/districts">
                     <MapPin className="mr-2 h-4 w-4" />
                     Regionais
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  className="cursor-pointer text-white hover:bg-festival-coral/20 hover:text-white"
+                  variant="ghost"
+                >
+                  <Link href="/evaluations">
+                    <LinkIcon className="mr-2 h-4 w-4" />
+                    Avaliação
                   </Link>
                 </Button>
               </>

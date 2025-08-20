@@ -13,7 +13,7 @@ import { Input } from '@/core/components/ui/input';
 import { useDistrictForm } from './district-form.hook';
 
 export type DistrictFormProps = {
-  onClose: () => void;
+  onClose: VoidFunction;
 };
 
 export function DistrictForm({ onClose }: DistrictFormProps) {

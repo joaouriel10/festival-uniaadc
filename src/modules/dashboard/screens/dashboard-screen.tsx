@@ -1,122 +1,80 @@
 'use client';
 
 import { Award, Medal, Trophy } from 'lucide-react';
-import { motion } from 'motion/react';
 import { Badge } from '@/core/components/ui/badge';
 import { Card, CardContent } from '@/core/components/ui/card';
 
 export function DashboardScreen() {
   return (
     <div className="relative z-10 mx-auto max-w-6xl p-4">
-      <motion.div
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8 text-center"
-        initial={{ opacity: 0, y: -50 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h1 className="mb-2 font-bold text-4xl text-white lg:text-5xl">
-          DASHBOARD DE RESULTADOS
-        </h1>
-        <p className="text-festival-light/80 text-xl">
-          Festival UNIAADC 2K25 - 8ª Edição
-        </p>
-      </motion.div>
+      <h1 className="mb-2 font-bold text-4xl text-white lg:text-5xl">
+        DASHBOARD DE RESULTADOS
+      </h1>
 
-      <motion.div
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        <h2 className="mb-6 text-center font-bold text-2xl text-white">
-          🏆 PÓDIO OFICIAL
-        </h2>
-        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-3">
-          <motion.div
-            className="order-1 md:order-1"
-            transition={{ type: 'spring', stiffness: 300 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <Card className="border-0 bg-gradient-to-br from-gray-300 to-gray-500 shadow-2xl">
-              <CardContent className="p-6 text-center text-white">
-                <div className="mb-4">
-                  <Medal className="mx-auto h-16 w-16 text-white" />
-                  <Badge className="mt-2 bg-white/20 text-white">
-                    2º Lugar
-                  </Badge>
-                </div>
-                {/* <h3 className="mb-2 font-bold text-lg">{resultados[1].nome}</h3>
+      <h2 className="mb-6 text-center font-bold text-2xl text-white">
+        🏆 PÓDIO OFICIAL
+      </h2>
+      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-3">
+        <Card className="border-0 bg-gradient-to-br from-gray-300 to-gray-500 shadow-2xl">
+          <CardContent className="p-6 text-center text-white">
+            <div className="mb-4">
+              <Medal className="mx-auto h-16 w-16 text-white" />
+              <Badge className="mt-2 bg-white/20 text-white">2º Lugar</Badge>
+            </div>
+            {/* <h3 className="mb-2 font-bold text-lg">{resultados[1].nome}</h3>
                 <p className="mb-1 font-bold text-3xl">
                   {resultados[1].pontuacaoTotal}
                 </p>
                 <p className="text-sm opacity-80">
                   {resultados[1].avaliacoes} avaliações
                 </p> */}
-              </CardContent>
-            </Card>
-          </motion.div>
+          </CardContent>
+        </Card>
 
-          <motion.div
-            className="md:-mt-4 order-2 md:order-2"
-            transition={{ type: 'spring', stiffness: 300 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <Card className="border-0 bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-2xl">
-              <CardContent className="p-8 text-center text-white">
-                <div className="mb-4">
-                  <Trophy className="mx-auto h-20 w-20 text-white" />
-                  <Badge className="mt-2 bg-white/20 text-white">
-                    🥇 CAMPEÃO
-                  </Badge>
-                </div>
-                {/* <h3 className="mb-2 font-bold text-xl">{resultados[0].nome}</h3>
+        <div className="md:-mt-4 order-2 md:order-2">
+          <Card className="border-0 bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-2xl">
+            <CardContent className="p-8 text-center text-white">
+              <div className="mb-4">
+                <Trophy className="mx-auto h-20 w-20 text-white" />
+                <Badge className="mt-2 bg-white/20 text-white">
+                  🥇 CAMPEÃO
+                </Badge>
+              </div>
+              {/* <h3 className="mb-2 font-bold text-xl">{resultados[0].nome}</h3>
                 <p className="mb-1 font-bold text-4xl">
                   {resultados[0].pontuacaoTotal}
                 </p>
                 <p className="text-sm opacity-80">
                   {resultados[0].avaliacoes} avaliações
                 </p> */}
-              </CardContent>
-            </Card>
-          </motion.div>
+            </CardContent>
+          </Card>
+        </div>
 
-          <motion.div
-            className="order-3 md:order-3"
-            transition={{ type: 'spring', stiffness: 300 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <Card className="border-0 bg-gradient-to-br from-amber-400 to-amber-600 shadow-2xl">
-              <CardContent className="p-6 text-center text-white">
-                <div className="mb-4">
-                  <Award className="mx-auto h-16 w-16 text-white" />
-                  <Badge className="mt-2 bg-white/20 text-white">
-                    3º Lugar
-                  </Badge>
-                </div>
-                {/* <h3 className="mb-2 font-bold text-lg">{resultados[2].nome}</h3>
+        <div className="order-3 md:order-3">
+          <Card className="border-0 bg-gradient-to-br from-amber-400 to-amber-600 shadow-2xl">
+            <CardContent className="p-6 text-center text-white">
+              <div className="mb-4">
+                <Award className="mx-auto h-16 w-16 text-white" />
+                <Badge className="mt-2 bg-white/20 text-white">3º Lugar</Badge>
+              </div>
+              {/* <h3 className="mb-2 font-bold text-lg">{resultados[2].nome}</h3>
                 <p className="mb-1 font-bold text-3xl">
                   {resultados[2].pontuacaoTotal}
                 </p>
                 <p className="text-sm opacity-80">
                   {resultados[2].avaliacoes} avaliações
                 </p> */}
-              </CardContent>
-            </Card>
-          </motion.div>
+            </CardContent>
+          </Card>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Classificação Completa */}
-      <motion.div
-        animate={{ opacity: 1, y: 0 }}
-        initial={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-      >
-        <h2 className="mb-6 text-center font-bold text-2xl text-white">
-          📊 CLASSIFICAÇÃO COMPLETA
-        </h2>
-        <div className="grid gap-4">
-          {/* {resultados.map((resultado, index) => (
+      <h2 className="mb-6 text-center font-bold text-2xl text-white">
+        📊 CLASSIFICAÇÃO COMPLETA
+      </h2>
+      <div className="grid gap-4">
+        {/* {resultados.map((resultado, index) => (
             <motion.div
               animate={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: -50 }}
@@ -307,8 +265,7 @@ export function DashboardScreen() {
               </Card>
             </motion.div>
           ))} */}
-        </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
