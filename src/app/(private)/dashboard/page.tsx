@@ -1,7 +1,5 @@
+import { DashboardScreen } from '@/modules/dashboard/screens/dashboard-screen';
+
 export default function Dashboard() {
-  return (
-    <div className="flex h-full items-center justify-center">
-      <h1>Dashboard</h1>
-    </div>
-  );
+  return <DashboardScreen />;
 }

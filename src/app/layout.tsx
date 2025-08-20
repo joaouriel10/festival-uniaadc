@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { headers } from 'next/headers';
 import './globals.css';
 import { Toaster } from '@/core/components/ui/sonner';
+import { Providers } from './(private)/providers';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -18,18 +20,23 @@ export const metadata: Metadata = {
   description: 'Festival de Música',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nextHeaders = await headers();
+  const nonce = nextHeaders.get('x-nonce');
+
   return (
     <html lang="pt-BR">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <Toaster />
+        <Providers nounce={nonce || ''}>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
