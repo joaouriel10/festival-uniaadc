@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { getRatingsByUserId } from '../actions/list-ratings-by-id';
+import { getRatingsByUserId } from '../actions';
 
 export type UseGetRatingsByUserIdParams = {
   page: number;

@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { json, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { user } from './auth';
 
@@ -62,3 +63,18 @@ export const rating = pgTable('rating', {
     .notNull(),
   deletedAt: timestamp('deleted_at'),
 });
+
+export const ratingRelations = relations(rating, ({ one }) => ({
+  judge: one(user, {
+    fields: [rating.judgeId],
+    references: [user.id],
+  }),
+  regional: one(regional, {
+    fields: [rating.regionalId],
+    references: [regional.id],
+  }),
+}));
+
+export const regionalRelations = relations(regional, ({ many }) => ({
+  ratings: many(rating),
+}));

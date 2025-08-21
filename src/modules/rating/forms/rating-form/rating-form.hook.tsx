@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 import { queryClient } from '@/infra/lib/react-query';
-import { updateRating } from '../../actions/update-rating';
+import { updateRating } from '../../actions';
 import { getDefaultValues } from '../../utils/get-default-values-from-rating-form';
 
 const ratingSchema = z.object({
@@ -73,7 +73,6 @@ export function useRatingForm({
       toast.success('Avaliação atualizada com sucesso!');
       form.reset();
     } catch (error) {
-      console.error('Error submitting rating:', error);
       toast.error('Erro ao enviar avaliação. Tente novamente.');
     } finally {
       setIsLoading(false);

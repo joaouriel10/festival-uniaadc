@@ -5,7 +5,12 @@ import {
   userRelations,
   verification,
 } from './schemas/auth';
-import { rating, regional } from './schemas/others';
+import {
+  rating,
+  ratingRelations,
+  regional,
+  regionalRelations,
+} from './schemas/others';
 
 const schema = {
   user,
@@ -14,7 +19,9 @@ const schema = {
   account,
   verification,
   regional,
+  regionalRelations,
   rating,
+  ratingRelations,
 };
 
 export { schema };
