@@ -1,5 +1,4 @@
 import { LinkIcon } from 'lucide-react';
-import { redirect } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -7,19 +6,12 @@ import {
   CardTitle,
 } from '@/core/components/ui/card';
 import { CURRENT_PAGE, PAGE_SIZE } from '@/core/constants';
-import { getServerSession } from '@/infra/lib/get-authenticated-user';
 import { getDistricts } from '@/modules/districts/actions/list-districts';
 import { getJuries } from '../actions';
 import { EvaluationTable } from '../components/evaluations-table';
 import { LinkEvaluation } from '../components/link-evaluations';
 
 export async function EvaluationsScreen() {
-  const { sessionFromServer } = await getServerSession();
-
-  if (sessionFromServer?.user.role !== 'admin') {
-    redirect('/rating');
-  }
-
   const [{ juries }, { districts }] = await Promise.all([
     getJuries({ page: CURRENT_PAGE, pageSize: PAGE_SIZE }),
     getDistricts({ page: CURRENT_PAGE, pageSize: PAGE_SIZE }),

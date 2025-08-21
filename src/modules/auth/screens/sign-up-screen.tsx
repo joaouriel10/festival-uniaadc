@@ -14,7 +14,6 @@ export function SignUpScreen() {
         <SignUpForm />
       </motion.div>
 
-      {/* Left Side - Branding */}
       <div className="space-y-8 text-center lg:text-left">
         <div className="flex flex-col gap-2">
           <motion.h1

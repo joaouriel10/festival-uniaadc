@@ -1,14 +1,6 @@
-import { redirect } from 'next/navigation';
-import { getServerSession } from '@/infra/lib/get-authenticated-user';
 import { UserDataTable } from '../components/user-datatable';
 
-export async function UsersScreen() {
-  const { sessionFromServer } = await getServerSession();
-
-  if (sessionFromServer?.user.role !== 'admin') {
-    redirect('/rating');
-  }
-
+export function UsersScreen() {
   return (
     <div className="relative mx-auto max-w-7xl p-4">
       <div className="mb-8 text-center">

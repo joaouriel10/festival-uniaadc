@@ -1,5 +1,4 @@
 import { MapPin } from 'lucide-react';
-import { redirect } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -7,17 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/core/components/ui/card';
-import { getServerSession } from '@/infra/lib/get-authenticated-user';
 import { CreateDistrictButton } from '../components/create-district-button';
 import { DistrictsTable } from '../components/districts-table';
 
-export async function DistrictsScreen() {
-  const { sessionFromServer } = await getServerSession();
-
-  if (sessionFromServer?.user.role !== 'admin') {
-    redirect('/rating');
-  }
-
+export function DistrictsScreen() {
   return (
     <div className="relative z-10 mx-auto max-w-7xl p-4">
       <div className="mb-8 text-center">

@@ -1,10 +1,13 @@
 /** biome-ignore-all lint/complexity/useSimplifiedLogicExpression: Simplified logic expression is not allowed */
-import type { Session } from 'better-auth';
 import { type NextRequest, NextResponse } from 'next/server';
 import { applySecurityHeaders } from './infra/middleware/apply-security-headers';
 
+const adminRoutes = ['/dashboard', '/users', '/evaluations', '/districts'];
+const juryRoutes = ['/rating'];
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next();
+  const pathname = request.nextUrl.pathname;
 
   const session = await fetch(
     `${request.nextUrl.origin}/api/auth/get-session`,
@@ -15,31 +18,24 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const body = (await session.json()) as Session & {
-    role: 'admin' | 'jury' | 'participant';
-  };
+  const body = await session.json();
 
-  const isPublicRoute =
-    request.nextUrl.pathname.startsWith('/sign-up') ||
-    request.nextUrl.pathname === '/';
+  const isPublicRoute = pathname.startsWith('/sign-up') || pathname === '/';
 
   response = await applySecurityHeaders(response);
 
-  if (body && isPublicRoute) {
+  const role = body?.user?.role;
+
+  if (role === 'admin' && juryRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  if (body && !isPublicRoute) {
-    if (
-      body.role === 'admin' &&
-      request.nextUrl.pathname.startsWith('/rating')
-    ) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
+  if (role === 'jury' && adminRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL('/rating', request.url));
+  }
 
-    if (!request.nextUrl.pathname.startsWith('/rating')) {
-      return NextResponse.redirect(new URL('/rating', request.url));
-    }
+  if (body && isPublicRoute) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   if (!body && !isPublicRoute) {
@@ -49,7 +45,6 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-// NOTES: Aqui serão as rotas que serão protegidas pelo middleware
 export const config = {
   matcher: [
     {

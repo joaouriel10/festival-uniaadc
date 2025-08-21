@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import revestidosBg from '@/core/assets/logo-revestidos-preto.webp';
+import revestidosBg from '@/../public/logo-revestidos-preto.webp';
 import { Footer } from '@/core/components/layout/footer';
 
 export default function AuthLayout({

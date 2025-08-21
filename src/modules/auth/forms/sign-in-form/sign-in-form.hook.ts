@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
-import { authClient } from '@/infra/lib/auth-client'; //import the auth client
+import { authClient } from '@/infra/lib/auth-client';
 
 const formSchema = z.object({
   email: z.email({
@@ -36,7 +36,6 @@ export function useSignInForm() {
       {
         email,
         password,
-        callbackURL: '/dashboard',
       },
       {
         onError: (ctx) => {
