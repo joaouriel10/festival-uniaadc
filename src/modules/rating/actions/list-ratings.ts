@@ -401,7 +401,13 @@ export async function getRatingsByRegional(): Promise<RegionalRatingsResponse> {
     calculateRegionalAverages(regional);
   }
 
-  return Array.from(regionalMap.values()).sort((a, b) =>
+  const resultArray = Array.from(regionalMap.values()).sort((a, b) =>
     a.name.localeCompare(b.name)
   );
+
+  const orderedResultByOverallAverage = resultArray.sort(
+    (a, b) => b.averages.overallAverage - a.averages.overallAverage
+  );
+
+  return orderedResultByOverallAverage;
 }

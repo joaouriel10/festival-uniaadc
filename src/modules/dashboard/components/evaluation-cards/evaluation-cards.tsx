@@ -1,24 +1,14 @@
 'use client';
 
-import { Award, Eye, Loader, Medal, Star, Trophy } from 'lucide-react';
-import { Badge } from '@/core/components/ui/badge';
-import { Button } from '@/core/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/core/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/core/components/ui/dialog';
+import { Award, Loader, Medal, Star, Trophy } from 'lucide-react';
+import { Fragment } from 'react';
+import { Card, CardContent } from '@/core/components/ui/card';
 import { useDistricts } from '@/modules/districts/queries/get-districts';
-import type { RegionalRatingsResponse } from '@/modules/rating/actions';
+import type {
+  RatingsListItem,
+  RegionalRatingsResponse,
+} from '@/modules/rating/actions';
+import { EvaluationCard } from './evaluation-card';
 
 type ListEvaluationsProps = {
   data: RegionalRatingsResponse;
@@ -50,6 +40,17 @@ const getPosicaoColor = (posicao: number) => {
   }
 };
 
+export type EvaluationCardData = {
+  districtId: string;
+  districtName: string;
+  averages: {
+    regionalMusicAverage: number;
+    originalMusicAverage: number;
+    overallAverage: number;
+  };
+  ratings: RatingsListItem[];
+};
+
 export function EvaluationCards({ data }: ListEvaluationsProps) {
   const { data: districts, isLoading } = useDistricts();
 
@@ -61,205 +62,100 @@ export function EvaluationCards({ data }: ListEvaluationsProps) {
     );
   }
 
+  const calculateRatingWhenDistrictIdIsSame = (districtId: string) => {
+    return data.find((rating) => rating.regionalId === districtId)?.ratings
+      .length;
+  };
+
+  const generateCardsData = () => {
+    const generateData = new Map<string, EvaluationCardData>();
+
+    for (const district of districts?.districts || []) {
+      const districtId = district.id;
+      const districtName = district.name;
+
+      const ratings = data.filter((rating) => rating.regionalId === districtId);
+
+      const averages = ratings.reduce(
+        (acc, rating) => {
+          acc.regionalMusicAverage += rating.averages.regionalMusicAverage;
+          acc.originalMusicAverage += rating.averages.originalMusicAverage;
+          acc.overallAverage += rating.averages.overallAverage;
+          return acc;
+        },
+        {
+          regionalMusicAverage: 0,
+          originalMusicAverage: 0,
+          overallAverage: 0,
+        }
+      );
+
+      if (ratings.length > 0) {
+        averages.regionalMusicAverage /= ratings.length;
+        averages.originalMusicAverage /= ratings.length;
+        averages.overallAverage /= ratings.length;
+      }
+
+      generateData.set(districtId, {
+        districtId,
+        districtName,
+        averages,
+
+        ratings: ratings.flatMap((rating) => rating.ratings),
+      });
+    }
+
+    return Array.from(generateData.values()).sort(
+      (a, b) => b.averages.overallAverage - a.averages.overallAverage
+    );
+  };
+
+  const generatedCardsData = generateCardsData();
+
   return (
     <>
-      {districts?.districts.map((district) => (
-        <>
-          <div key={district.id}>
-            <Card className="border-0 bg-white/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`h-12 w-12 rounded-full bg-gradient-to-br ${getPosicaoColor(4)} flex items-center justify-center`}
-                    >
-                      {getPosicaoIcon(4)}
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-festival-brown text-lg">
-                        {district.name}
-                      </h3>
-                      {/* <p className="text-festival-brown/70 text-sm">
-                        {district.avaliacoes} avaliações realizadas
-                      </p> */}
-                    </div>
+      {generatedCardsData.map((district, index) => (
+        <div key={district.districtId}>
+          <Card className="border-0 bg-white/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`h-12 w-12 rounded-full bg-gradient-to-br ${getPosicaoColor(index + 1)} flex items-center justify-center`}
+                  >
+                    {getPosicaoIcon(index + 1)}
                   </div>
-                  {data?.map((rating) => {
-                    if (rating.regionalId === district.id) {
-                      return (
-                        <div className="text-right" key={rating.name}>
-                          {/* <p className="font-bold text-3xl text-festival-coral">
-                      {resultado.pontuacaoTotal}
-                    </p> */}
-                          <div className="mt-1 flex items-center gap-2">
-                            <Badge className="text-xs" variant="outline">
-                              M1:{' '}
-                              {rating.averages.regionalMusicAverage.toFixed(1)}
-                            </Badge>
-                            <Badge className="text-xs" variant="outline">
-                              M2:{' '}
-                              {rating.averages.originalMusicAverage.toFixed(1)}
-                            </Badge>
-                            <div className="ml-2 flex gap-1">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button
-                                    className="bg-transparent"
-                                    size="sm"
-                                    variant="outline"
-                                  >
-                                    <Eye className="h-4 w-4" />
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="max-w-4xl">
-                                  <DialogHeader>
-                                    <DialogTitle>
-                                      Revisão de Avaliações - {district.name}
-                                    </DialogTitle>
-                                    <DialogDescription>
-                                      Detalhes das avaliações realizadas para
-                                      esta regional
-                                    </DialogDescription>
-                                  </DialogHeader>
-                                  <div className="max-h-96 space-y-4 overflow-y-auto">
-                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                      <Card className="gap-2">
-                                        <CardHeader>
-                                          <CardTitle className="text-lg">
-                                            Música Regional
-                                          </CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                          <div className="space-y-2">
-                                            <div className="flex justify-between">
-                                              <span>Afinação Vocal:</span>
-                                              <span className="font-bold">
-                                                8.5/10
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between">
-                                              <span>Harmonia Vocal:</span>
-                                              <span className="font-bold">
-                                                9.0/10
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between">
-                                              <span>Nível Técnico:</span>
-                                              <span className="font-bold">
-                                                8.2/10
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between">
-                                              <span>Performance:</span>
-                                              <span className="font-bold">
-                                                9.5/10
-                                              </span>
-                                            </div>
-                                          </div>
-                                        </CardContent>
-                                      </Card>
-                                      <Card className="gap-2">
-                                        <CardHeader>
-                                          <CardTitle className="text-lg">
-                                            Música Autoral
-                                          </CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                          <div className="space-y-2">
-                                            <div className="flex justify-between">
-                                              <span>Afinação Vocal:</span>
-                                              <span className="font-bold">
-                                                8.8/10
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between">
-                                              <span>Harmonia Vocal:</span>
-                                              <span className="font-bold">
-                                                8.7/10
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between">
-                                              <span>Nível Técnico:</span>
-                                              <span className="font-bold">
-                                                8.0/10
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between">
-                                              <span>Coerência Letra:</span>
-                                              <span className="font-bold">
-                                                9.2/10
-                                              </span>
-                                            </div>
-                                          </div>
-                                        </CardContent>
-                                      </Card>
-                                    </div>
-                                    <Card className="gap-2">
-                                      <CardHeader>
-                                        <CardTitle className="text-lg">
-                                          Observações dos Jurados
-                                        </CardTitle>
-                                      </CardHeader>
-                                      <CardContent className="divide-y-3 divide-festival-coral">
-                                        {rating.ratings.map((review) => {
-                                          return (
-                                            <div
-                                              className="space-y-3 py-3"
-                                              key={review.id}
-                                            >
-                                              <div className="border-festival-coral border-l-4 pl-4">
-                                                <p className="font-semibold">
-                                                  Jurado: {review.judgeName}
-                                                </p>
-                                                <p className="text-gray-600 text-sm">
-                                                  Musica Regional:{' '}
-                                                  {
-                                                    review.description
-                                                      .regionalMusic
-                                                  }
-                                                </p>
-                                                <p className="text-gray-600 text-sm">
-                                                  Musica Autoral:{' '}
-                                                  {
-                                                    review.description
-                                                      .originalMusic
-                                                  }
-                                                </p>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                      </CardContent>
-                                    </Card>
-                                  </div>
-                                </DialogContent>
-                              </Dialog>
-                              {/* <Button
-                          className="border-festival-coral bg-festival-coral/10 text-festival-coral hover:bg-festival-coral/20"
-                          disabled={revisaoSolicitada === resultado.id}
-                          onClick={() =>
-                            handleSolicitarRevisao(resultado.id, resultado.nome)
-                          }
-                          size="sm"
-                          variant="outline"
-                        >
-                          {revisaoSolicitada === resultado.id ? (
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-festival-coral border-t-transparent" />
-                          ) : (
-                            <RefreshCw className="h-4 w-4" />
-                          )}
-                        </Button> */}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    }
-                  })}
+                  <div>
+                    <h3 className="font-bold text-festival-brown text-lg">
+                      {district.districtName}
+                    </h3>
+                    <p className="text-festival-brown/70 text-sm">
+                      {calculateRatingWhenDistrictIdIsSame(
+                        district.districtId
+                      ) ? (
+                        <>
+                          {calculateRatingWhenDistrictIdIsSame(
+                            district.districtId
+                          )}{' '}
+                          avaliações realizadas
+                        </>
+                      ) : (
+                        'Nenhuma avaliação realizada'
+                      )}
+                    </p>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </>
+                {generatedCardsData?.map((rating) => (
+                  <Fragment key={rating.districtId}>
+                    {district.districtId === rating.districtId && (
+                      <EvaluationCard rating={rating} />
+                    )}
+                  </Fragment>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       ))}
     </>
   );
