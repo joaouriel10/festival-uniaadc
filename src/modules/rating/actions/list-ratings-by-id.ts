@@ -20,8 +20,8 @@ export type RatingListResponse = {
 };
 
 export type GetRatingListParams = {
-  userId: string;
   page: number;
+  userId: string;
   pageSize?: number;
 };
 

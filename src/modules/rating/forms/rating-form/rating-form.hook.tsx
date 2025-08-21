@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
@@ -52,8 +51,6 @@ export function useRatingForm({
   ratingId,
   initialData,
 }: UseRatingFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
-
   const form = useForm<RatingFormData>({
     resolver: zodResolver(ratingSchema),
     defaultValues: getDefaultValues(initialData),
@@ -62,7 +59,6 @@ export function useRatingForm({
   const watchedRegional = form.watch('regional');
 
   const onSubmit = async (data: RatingFormData) => {
-    setIsLoading(true);
     try {
       await updateRating({
         id: data.regional,
@@ -74,12 +70,10 @@ export function useRatingForm({
       form.reset();
     } catch (_error) {
       toast.error('Erro ao enviar avaliação. Tente novamente.');
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const isEditMode = Boolean(ratingId);
 
-  return { onSubmit, watchedRegional, isLoading, form, isEditMode };
+  return { onSubmit, watchedRegional, form, isEditMode };
 }

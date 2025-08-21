@@ -1,9 +1,9 @@
 'use client';
 
 import { MapPin, Music, Star, Users, Volume2 } from 'lucide-react';
+import { useRef, useState } from 'react';
 import { Controller, FormProvider } from 'react-hook-form';
 import { SliderComponent } from '@/core/components/slider-component';
-import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
@@ -26,6 +26,7 @@ import {
 } from '@/core/components/ui/tabs';
 import { Textarea } from '@/core/components/ui/textarea';
 import { useGetRatingsByUserId } from '../../queries/use-ratings';
+import { RatingFormConfirmationDialog } from './fragments/rating-form-confirmation-dialog';
 import { useRatingForm } from './rating-form.hook';
 
 type RatingFormProps = {
@@ -33,13 +34,18 @@ type RatingFormProps = {
 };
 
 export function RatingForm({ userId }: RatingFormProps) {
-  const { form, isLoading, onSubmit, watchedRegional } = useRatingForm({
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { form, onSubmit } = useRatingForm({
     userId,
     ratingId: '',
     initialData: {},
   });
 
-  const { data } = useGetRatingsByUserId({
+  console.log(form.formState.errors);
+
+  const { data, isLoading } = useGetRatingsByUserId({
     userId,
     page: 1,
     pageSize: 10,
@@ -48,12 +54,17 @@ export function RatingForm({ userId }: RatingFormProps) {
   const {
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = form;
+
+  const forceFormSubmit = () => {
+    formRef.current?.requestSubmit();
+    setIsOpen(false);
+  };
 
   return (
     <FormProvider {...form}>
-      <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      <form className="w-full" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div className="mb-8">
           <Card className="border-0 bg-white/95 shadow-xl backdrop-blur-sm">
             <CardHeader>
@@ -330,16 +341,12 @@ export function RatingForm({ userId }: RatingFormProps) {
         </Tabs>
 
         <div className="mt-8 text-center">
-          <Button
-            className="transform bg-festival-coral px-8 py-4 font-medium text-lg text-white transition-all duration-200 hover:scale-[1.02] hover:bg-festival-orange"
-            disabled={isSubmitting || isLoading || !watchedRegional}
-            size="lg"
-            type="submit"
-          >
-            {isSubmitting || isLoading
-              ? 'Enviando Avaliação...'
-              : 'Enviar Avaliação'}
-          </Button>
+          <RatingFormConfirmationDialog
+            forceFormSubmit={forceFormSubmit}
+            isOpen={isOpen}
+            ratings={data?.ratings}
+            setIsOpen={setIsOpen}
+          />
         </div>
       </form>
     </FormProvider>
