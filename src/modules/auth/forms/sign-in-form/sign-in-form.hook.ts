@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 import { authClient } from '@/infra/lib/auth-client';
+import { queryClient } from '@/infra/lib/react-query';
 
 const formSchema = z.object({
   email: z.email({
@@ -55,6 +56,7 @@ export function useSignInForm() {
           toast.error(ctx.error.message);
         },
         onSuccess: () => {
+          queryClient.invalidateQueries();
           router.push('/dashboard');
         },
       }

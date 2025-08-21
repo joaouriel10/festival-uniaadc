@@ -43,14 +43,14 @@ export function UserDataTable() {
   const handleApproveUser = async (userId: string) => {
     await approveUser(userId);
     queryClient.invalidateQueries({
-      queryKey: ['users', currentPage, pageSize],
+      queryKey: ['users'],
     });
   };
 
   const handleDisapproveUser = async (userId: string) => {
     await disapproveUser(userId);
     queryClient.invalidateQueries({
-      queryKey: ['users', currentPage, pageSize],
+      queryKey: ['users'],
     });
   };
 

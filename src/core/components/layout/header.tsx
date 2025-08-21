@@ -27,6 +27,7 @@ import {
 } from '@/core/components/ui/dropdown-menu';
 import { cn } from '@/core/lib/utils';
 import { authClient, useSession } from '@/infra/lib/auth-client';
+import { queryClient } from '@/infra/lib/react-query';
 
 export function Header() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export function Header() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
+          queryClient.invalidateQueries();
           router.push('/');
         },
       },

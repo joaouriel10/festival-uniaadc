@@ -9,6 +9,7 @@ export async function approveUser(userId: string) {
     .update(schema.user)
     .set({
       emailVerified: true,
+      role: 'jury',
     })
     .where(eq(schema.user.id, userId));
 }
