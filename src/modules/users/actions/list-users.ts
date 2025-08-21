@@ -12,17 +12,17 @@ export type UserListItem = {
   regionalName: string;
   isApproved: boolean;
   createdAt: Date;
-}
+};
 
 export type UserListResponse = {
   users: UserListItem[];
   totalCount: number;
-}
+};
 
 export type GetUserListParams = {
   page: number;
   pageSize?: number;
-}
+};
 
 export async function getUserList({
   page,

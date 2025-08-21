@@ -72,7 +72,7 @@ export function useRatingForm({
       queryClient.invalidateQueries({ queryKey: [`evaluations-${userId}`] });
       toast.success('Avaliação atualizada com sucesso!');
       form.reset();
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao enviar avaliação. Tente novamente.');
     } finally {
       setIsLoading(false);

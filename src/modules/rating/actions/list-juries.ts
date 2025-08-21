@@ -9,17 +9,17 @@ export type JuriesListItem = {
   name: string;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type JuriesListResponse = {
   juries: JuriesListItem[];
   totalCount: number;
-}
+};
 
 export type GetJuriesListParams = {
   page: number;
   pageSize?: number;
-}
+};
 
 export async function getJuries({
   page,
