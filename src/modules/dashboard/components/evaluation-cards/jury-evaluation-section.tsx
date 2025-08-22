@@ -6,11 +6,9 @@ type JuryEvaluationSectionProps = {
 
 export function JuryEvaluationSection({ review }: JuryEvaluationSectionProps) {
   return (
-    <div className="space-y-3 py-3" key={review.id}>
+    <div className="space-y-3 py-3">
       <div className="border-festival-coral border-l-4 pl-4">
-        <p className="font-semibold">
-          Jurado: {review.judgeName}
-        </p>
+        <p className="font-semibold">Jurado: {review.judgeName}</p>
         <div className="mt-3 mb-3 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <p className="mb-2 font-normal text-festival-brown">
@@ -20,9 +18,7 @@ export function JuryEvaluationSection({ review }: JuryEvaluationSectionProps) {
               <div className="flex justify-between">
                 <span>Afinação Vocal:</span>
                 <span className="font-bold text-festival-coral">
-                  {review.regionalMusic.choral_category.vocal_tuning.toFixed(
-                    1
-                  )}
+                  {review.regionalMusic.choral_category.vocal_tuning.toFixed(1)}
                   /10
                 </span>
               </div>
@@ -63,9 +59,7 @@ export function JuryEvaluationSection({ review }: JuryEvaluationSectionProps) {
               <div className="flex justify-between">
                 <span>Afinação Vocal:</span>
                 <span className="font-bold text-festival-coral">
-                  {review.originalMusic.choral_category.vocal_tuning.toFixed(
-                    1
-                  )}
+                  {review.originalMusic.choral_category.vocal_tuning.toFixed(1)}
                   /10
                 </span>
               </div>
@@ -101,8 +95,7 @@ export function JuryEvaluationSection({ review }: JuryEvaluationSectionProps) {
         </div>
 
         <p className="text-gray-600 text-sm">
-          Musica Regional:{' '}
-          {review.description.regionalMusic}
+          Musica Regional: {review.description.regionalMusic}
         </p>
         <p className="text-gray-600 text-sm">
           Musica Autoral: {review.description.originalMusic}
