@@ -68,7 +68,7 @@ export function RatingForm({ userId }: RatingFormProps) {
           overallPerformance: 0,
         },
         observations: '',
-      }
+      },
     },
   });
 

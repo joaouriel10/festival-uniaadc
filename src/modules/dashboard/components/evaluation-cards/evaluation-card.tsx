@@ -165,26 +165,36 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Afinação Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.tuning}/10
+                            {getMusicAverage().averageRegionalMusic.tuning.toFixed(
+                              1
+                            )}
+                            /10
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Harmonia Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.harmony}/10
+                            {getMusicAverage().averageRegionalMusic.harmony.toFixed(
+                              1
+                            )}
+                            /10
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Nível Técnico:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.technical}
+                            {getMusicAverage().averageRegionalMusic.technical.toFixed(
+                              1
+                            )}
                             /10
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Performance:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.performance}
+                            {getMusicAverage().averageRegionalMusic.performance.toFixed(
+                              1
+                            )}
                             /10
                           </span>
                         </div>
@@ -200,26 +210,37 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Afinação Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.tuning}/10
+                            {getMusicAverage().averageOriginalMusic.tuning.toFixed(
+                              1
+                            )}
+                            /10
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Harmonia Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.harmony}/10
+                            {getMusicAverage().averageOriginalMusic.harmony.toFixed(
+                              1
+                            )}
+                            /10
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Nível Técnico:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.technical}
+                            {getMusicAverage().averageOriginalMusic.technical.toFixed(
+                              1
+                            )}
                             /10
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Coerência Letra:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.lyric}/10
+                            {getMusicAverage().averageOriginalMusic.lyric.toFixed(
+                              1
+                            )}
+                            /10
                           </span>
                         </div>
                       </div>
@@ -240,6 +261,95 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                             <p className="font-semibold">
                               Jurado: {review.judgeName}
                             </p>
+                            <div className="mt-3 mb-3 grid grid-cols-1 gap-4 md:grid-cols-2">
+                              <div>
+                                <p className="mb-2 font-normal text-festival-brown">
+                                  Música Regional - Notas:
+                                </p>
+                                <div className="space-y-1 text-xs">
+                                  <div className="flex justify-between">
+                                    <span>Afinação Vocal:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.regionalMusic.choral_category.vocal_tuning.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span>Harmonia Vocal:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.regionalMusic.choral_category.vocal_harmony.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span>Nível Técnico:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.regionalMusic.choral_category.technical_level.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span>Performance:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.regionalMusic.choral_category.performanceCreativity.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div>
+                                <p className="mb-2 font-normal text-festival-brown">
+                                  Música Autoral - Notas:
+                                </p>
+                                <div className="space-y-1 text-xs">
+                                  <div className="flex justify-between">
+                                    <span>Afinação Vocal:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.originalMusic.choral_category.vocal_tuning.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span>Harmonia Vocal:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.originalMusic.choral_category.vocal_harmony.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span>Nível Técnico:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.originalMusic.choral_category.technical_level.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span>Coerência Letra:</span>
+                                    <span className="font-bold text-festival-coral">
+                                      {review.originalMusic.choral_category.lyric_composition_coherence.toFixed(
+                                        1
+                                      )}
+                                      /10
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
                             <p className="text-gray-600 text-sm">
                               Musica Regional:{' '}
                               {review.description.regionalMusic}

@@ -39,13 +39,13 @@ const SliderComponent = ({
             <Slider
               className="w-full"
               max={10}
-              min={1}
+              min={0.5}
               onValueChange={(value) => field.onChange(value[0])}
-              step={0.1}
-              value={[typeof field.value === 'number' ? field.value : 0]}
+              step={0.5}
+              value={[typeof field.value === 'number' ? field.value : 0.5]}
             />
             <div className="flex justify-between text-festival-brown/50 text-xs">
-              <span>1</span>
+              <span>0</span>
               <span>5</span>
               <span>10</span>
             </div>
