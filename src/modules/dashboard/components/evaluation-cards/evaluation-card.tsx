@@ -17,127 +17,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/core/components/ui/dialog';
+import { GetMusicAverage } from '../../utils/get-music-average';
 import type { EvaluationCardData } from './evaluation-cards';
 import { JuryEvaluationSection } from './jury-evaluation-section';
 
 type EvaluationCardProps = {
-  rating: EvaluationCardData;
+  evaluation: EvaluationCardData;
 };
 
-const calculateAverage = (values: number[], total: number) => {
-  return total === 0 ? 0 : values.reduce((acc, curr) => acc + curr, 0) / total;
-};
-
-export function EvaluationCard({ rating }: EvaluationCardProps) {
-  const getMusicAverage = () => {
-    if (!rating.ratings || rating.ratings.length === 0) {
-      return {
-        averageOriginalMusic: {
-          technical: 0,
-          lyric: 0,
-          harmony: 0,
-          tuning: 0,
-        },
-        averageRegionalMusic: {
-          technical: 0,
-          performance: 0,
-          harmony: 0,
-          tuning: 0,
-        },
-      };
-    }
-
-    const calculateAverageOfOriginalMusic = () => {
-      const technical = calculateAverage(
-        rating.ratings.map(
-          (r) => r.originalMusic.choral_category.technical_level
-        ),
-
-        rating.ratings.length
-      );
-
-      const lyric = calculateAverage(
-        rating.ratings.map(
-          (r) => r.originalMusic.choral_category.lyric_composition_coherence
-        ),
-
-        rating.ratings.length
-      );
-
-      const harmony = calculateAverage(
-        rating.ratings.map(
-          (r) => r.originalMusic.choral_category.vocal_harmony
-        ),
-
-        rating.ratings.length
-      );
-
-      const tuning = calculateAverage(
-        rating.ratings.map((r) => r.originalMusic.choral_category.vocal_tuning),
-
-        rating.ratings.length
-      );
-
-      return {
-        lyric,
-        tuning,
-        harmony,
-        technical,
-      };
-    };
-
-    const calculateAverageOfRegionalMusic = () => {
-      const technical = calculateAverage(
-        rating.ratings.map(
-          (r) => r.regionalMusic.choral_category.technical_level
-        ),
-        rating.ratings.length
-      );
-
-      const performance = calculateAverage(
-        rating.ratings.map(
-          (r) => r.regionalMusic.choral_category.performanceCreativity
-        ),
-        rating.ratings.length
-      );
-
-      const harmony = calculateAverage(
-        rating.ratings.map(
-          (r) => r.regionalMusic.choral_category.vocal_harmony
-        ),
-        rating.ratings.length
-      );
-
-      const tuning = calculateAverage(
-        rating.ratings.map((r) => r.regionalMusic.choral_category.vocal_tuning),
-        rating.ratings.length
-      );
-
-      return {
-        tuning,
-        harmony,
-        technical,
-        performance,
-      };
-    };
-
-    return {
-      averageOriginalMusic: calculateAverageOfOriginalMusic(),
-      averageRegionalMusic: calculateAverageOfRegionalMusic(),
-    };
-  };
+export function EvaluationCard({ evaluation }: EvaluationCardProps) {
+  const getMusicAverage = new GetMusicAverage(evaluation.ratings);
+  const musicAverage = getMusicAverage.getAverages();
 
   return (
     <div className="text-right">
       <p className="font-bold text-3xl text-festival-coral">
-        {rating.averages.overallAverage.toFixed(1)}
+        {evaluation.averages.overallAverage.toFixed(1)}
       </p>
       <div className="mt-1 flex items-center gap-2">
         <Badge className="text-xs" variant="outline">
-          M1: {rating.averages.regionalMusicAverage.toFixed(1)}
+          M1: {evaluation.averages.regionalMusicAverage.toFixed(1)}
         </Badge>
         <Badge className="text-xs" variant="outline">
-          M2: {rating.averages.originalMusicAverage.toFixed(1)}
+          M2: {evaluation.averages.originalMusicAverage.toFixed(1)}
         </Badge>
         <div className="ml-2 flex gap-1">
           <Dialog>
@@ -149,7 +51,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
             <DialogContent className="max-w-4xl">
               <DialogHeader>
                 <DialogTitle>
-                  Revisão de Avaliações - {rating.districtName}
+                  Revisão de Avaliações - {evaluation.districtName}
                 </DialogTitle>
                 <DialogDescription>
                   Detalhes das avaliações realizadas para esta regional
@@ -166,7 +68,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Afinação Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.tuning.toFixed(
+                            {musicAverage.averageRegionalMusic.vocal_tuning.toFixed(
                               1
                             )}
                             /10
@@ -175,7 +77,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Harmonia Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.harmony.toFixed(
+                            {musicAverage.averageRegionalMusic.vocal_harmony.toFixed(
                               1
                             )}
                             /10
@@ -184,7 +86,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Nível Técnico:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.technical.toFixed(
+                            {musicAverage.averageRegionalMusic.technical_level.toFixed(
                               1
                             )}
                             /10
@@ -193,7 +95,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Performance:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageRegionalMusic.performance.toFixed(
+                            {musicAverage.averageRegionalMusic.performanceCreativity.toFixed(
                               1
                             )}
                             /10
@@ -211,7 +113,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Afinação Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.tuning.toFixed(
+                            {musicAverage.averageOriginalMusic.vocal_tuning.toFixed(
                               1
                             )}
                             /10
@@ -220,7 +122,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Harmonia Vocal:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.harmony.toFixed(
+                            {musicAverage.averageOriginalMusic.vocal_harmony.toFixed(
                               1
                             )}
                             /10
@@ -229,7 +131,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Nível Técnico:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.technical.toFixed(
+                            {musicAverage.averageOriginalMusic.technical_level.toFixed(
                               1
                             )}
                             /10
@@ -238,7 +140,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                         <div className="flex justify-between">
                           <span>Coerência Letra:</span>
                           <span className="font-bold">
-                            {getMusicAverage().averageOriginalMusic.lyric.toFixed(
+                            {musicAverage.averageOriginalMusic.lyric_composition_coherence.toFixed(
                               1
                             )}
                             /10
@@ -255,7 +157,7 @@ export function EvaluationCard({ rating }: EvaluationCardProps) {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="divide-y-3 divide-festival-coral">
-                    {rating.ratings.map((review) => (
+                    {evaluation.ratings.map((review) => (
                       <JuryEvaluationSection key={review.id} review={review} />
                     ))}
                   </CardContent>
