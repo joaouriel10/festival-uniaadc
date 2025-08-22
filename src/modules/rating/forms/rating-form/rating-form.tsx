@@ -40,10 +40,37 @@ export function RatingForm({ userId }: RatingFormProps) {
   const { form, onSubmit } = useRatingForm({
     userId,
     ratingId: '',
-    initialData: {},
+    initialData: {
+      regionalMusic: {
+        choralCategory: {
+          vocalTuning: 0,
+          vocalHarmony: 0,
+          technicalLevel: 0,
+          performanceCreatividade: 0,
+        },
+        instrumental: {
+          musicTechnicalLevel: 0,
+          arrangementCoherence: 0,
+          overallPerformance: 0,
+        },
+        observations: '',
+      },
+      originalMusic: {
+        choralCategory: {
+          vocalTuning: 0,
+          vocalHarmony: 0,
+          technicalLevel: 0,
+          performanceCreatividade: 0,
+        },
+        instrumental: {
+          musicTechnicalLevel: 0,
+          arrangementCoherence: 0,
+          overallPerformance: 0,
+        },
+        observations: '',
+      }
+    },
   });
-
-  console.log(form.formState.errors);
 
   const { data, isLoading } = useGetRatingsByUserId({
     userId,
