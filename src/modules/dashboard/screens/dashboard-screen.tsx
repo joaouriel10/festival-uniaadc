@@ -9,7 +9,7 @@ export async function DashboardScreen() {
 
   return (
     <div className="relative mx-auto max-w-6xl p-40">
-      <h1 className="mb-2 font-bold text-4xl text-white lg:text-5xl">
+      <h1 className="mb-2 text-center font-bold text-4xl text-white lg:text-5xl">
         DASHBOARD DE RESULTADOS
       </h1>
       {data.length ? (

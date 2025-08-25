@@ -5,6 +5,7 @@ const calculateAverage = (values: number[], total: number) => {
 };
 
 type Averages = {
+  totalAverage: number;
   averageOriginalMusic: {
     technical_level: number;
     lyric_composition_coherence: number;
@@ -16,6 +17,16 @@ type Averages = {
     performanceCreativity: number;
     vocal_harmony: number;
     vocal_tuning: number;
+  };
+  instrumentalCategoryRegionalMusic: {
+    arrangement_coherence: number;
+    music_technical_level: number;
+    overall_performance: number;
+  };
+  instrumentalCategoryOriginalMusic: {
+    arrangement_coherence: number;
+    music_technical_level: number;
+    overall_performance: number;
   };
 };
 
@@ -33,6 +44,18 @@ const choralCategoryRegionalMusicKeys = [
   'vocal_tuning',
 ] as const;
 
+const instrumentalCategoryRegionalMusicKeys = [
+  'arrangement_coherence',
+  'music_technical_level',
+  'overall_performance',
+] as const;
+
+const instrumentalCategoryOriginalMusicKeys = [
+  'arrangement_coherence',
+  'music_technical_level',
+  'overall_performance',
+] as const;
+
 export class GetMusicAverage {
   private ratings: RatingsListItem[];
   private averages: Averages;
@@ -40,6 +63,7 @@ export class GetMusicAverage {
   constructor(ratings: RatingsListItem[]) {
     this.ratings = ratings;
     this.averages = {
+      totalAverage: 0,
       averageOriginalMusic: {
         technical_level: 0,
         lyric_composition_coherence: 0,
@@ -51,6 +75,16 @@ export class GetMusicAverage {
         performanceCreativity: 0,
         vocal_harmony: 0,
         vocal_tuning: 0,
+      },
+      instrumentalCategoryOriginalMusic: {
+        arrangement_coherence: 0,
+        music_technical_level: 0,
+        overall_performance: 0,
+      },
+      instrumentalCategoryRegionalMusic: {
+        arrangement_coherence: 0,
+        music_technical_level: 0,
+        overall_performance: 0,
       },
     };
   }
@@ -77,10 +111,47 @@ export class GetMusicAverage {
         this.ratings.length
       );
     }
+
+    for (const key of instrumentalCategoryOriginalMusicKeys) {
+      this.averages.instrumentalCategoryOriginalMusic[key] = calculateAverage(
+        this.ratings.map((r) => r.originalMusic.instrumental_category[key]),
+        this.ratings.length
+      );
+    }
+
+    for (const key of instrumentalCategoryRegionalMusicKeys) {
+      this.averages.instrumentalCategoryRegionalMusic[key] = calculateAverage(
+        this.ratings.map((r) => r.regionalMusic.instrumental_category[key]),
+        this.ratings.length
+      );
+    }
+  }
+
+  getTotalAverage(): void {
+    const overallAverage =
+      Object.values(this.averages.averageOriginalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      ) +
+      Object.values(this.averages.averageRegionalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      ) +
+      Object.values(this.averages.instrumentalCategoryOriginalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      ) +
+      Object.values(this.averages.instrumentalCategoryRegionalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+
+    this.averages.totalAverage = overallAverage / 14;
   }
 
   getAverages() {
     this.calculateAverage();
+    this.getTotalAverage();
     return this.averages;
   }
 }
