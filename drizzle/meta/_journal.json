@@ -50,6 +50,13 @@
       "when": 1755278010736,
       "tag": "0006_amused_landau",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1756151730404,
+      "tag": "0007_first_namora",
+      "breakpoints": true
     }
   ]
 }

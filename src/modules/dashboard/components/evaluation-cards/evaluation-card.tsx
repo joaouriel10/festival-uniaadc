@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, FileText } from 'lucide-react';
+import { Eye, FileText, RefreshCw } from 'lucide-react';
 import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Badge } from '@/core/components/ui/badge';
@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/core/components/ui/dialog';
+import { reviewRatingByRegionalId } from '@/modules/rating/actions';
 import { GetMusicAverage } from '../../utils/get-music-average';
 import { PDFRelatorio } from '../pdf-report/pdf-report';
 import type { EvaluationCardData } from './evaluation-cards';
@@ -54,6 +55,11 @@ export function EvaluationCard({ evaluation }: EvaluationCardProps) {
 
   const handleGeneratePDF = () => {
     handlePrint();
+  };
+
+  const handleReviewRatings = async () => {
+    await reviewRatingByRegionalId({ regionalId: evaluation.districtId });
+    window.location.reload();
   };
 
   return (
@@ -210,26 +216,18 @@ export function EvaluationCard({ evaluation }: EvaluationCardProps) {
             >
               <FileText className="h-4 w-4" />
             </Button>
-            {/* <Button
-                            className="border-festival-coral bg-festival-coral/10 text-festival-coral hover:bg-festival-coral/20"
-                            disabled={revisaoSolicitada === resultado.id}
-                            onClick={() =>
-                              handleSolicitarRevisao(resultado.id, resultado.nome)
-                            }
-                            size="sm"
-                            variant="outline"
-                          >
-                            {revisaoSolicitada === resultado.id ? (
-                              <div className="h-4 w-4 animate-spin rounded-full border-2 border-festival-coral border-t-transparent" />
-                            ) : (
-                              <RefreshCw className="h-4 w-4" />
-                            )}
-                          </Button> */}
+            <Button
+              className="border-festival-coral bg-festival-coral/10 text-festival-coral hover:bg-festival-coral/20"
+              onClick={handleReviewRatings}
+              size="sm"
+              variant="outline"
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* PDF Component for printing - hidden from view */}
       <div style={{ display: 'none' }}>
         <PDFRelatorio evaluation={evaluation} ref={pdfRef} />
       </div>

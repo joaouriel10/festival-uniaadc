@@ -1,6 +1,8 @@
+'use server';
+
 import { eq } from 'drizzle-orm';
 import { db } from '@/infra/database';
-import { rating } from '@/infra/database/schemas/others';
+import { excludeRating, rating } from '@/infra/database/schemas/others';
 
 type ReviewRatingByRegionalIdProps = {
   regionalId: string;
@@ -75,13 +77,54 @@ export async function reviewRatingByRegionalId({
       0
     ) / ratingsWithAverage.length;
 
-  const juryIdBelowAverage = ratingsWithAverage
-    .filter((ratingItem) => ratingItem.average < overallAverage)
-    .map((ratingItem) => ratingItem.judgeId);
+  console.log('Overall Average:', overallAverage);
+
+  const ratingsBelowAverage = ratingsWithAverage.filter(
+    (ratingItem) => ratingItem.average < overallAverage
+  );
+
+  const juryIdBelowAverage = ratingsBelowAverage.map(
+    (ratingItem) => ratingItem.judgeId
+  );
+
+  console.log('Jury IDs Below Average:', juryIdBelowAverage);
+
+  if (ratingsBelowAverage.length > 0) {
+    try {
+      const excludeRatingData = ratingsBelowAverage.map((ratingItem) => ({
+        regionalId,
+        judgeId: ratingItem.judgeId,
+        regionalMusic: ratingItem.regionalMusic,
+        originalMusic: ratingItem.originalMusic,
+        createdAt: ratingItem.createdAt,
+        updatedAt: new Date(),
+      }));
+
+      const idsToDelete = ratingsBelowAverage.map((r) => r.id);
+
+      await Promise.all([
+        db.insert(excludeRating).values(excludeRatingData),
+        ...idsToDelete.map((id) => db.delete(rating).where(eq(rating.id, id))),
+      ]);
+
+      console.log(
+        `Successfully moved ${ratingsBelowAverage.length} ratings below average to exclude_rating table`
+      );
+    } catch (error) {
+      console.error('Error moving ratings to exclude_rating:', error);
+      throw new Error('Failed to move ratings below average to exclude table');
+    }
+  }
+
+  const remainingRatings = ratingsWithAverage.filter(
+    (ratingItem) => ratingItem.average >= overallAverage
+  );
 
   return {
-    ratings: ratingsWithAverage,
+    ratings: remainingRatings,
     overallAverage,
     juryIdBelowAverage,
+    movedToExclude: ratingsBelowAverage.length,
+    remainingCount: remainingRatings.length,
   };
 }

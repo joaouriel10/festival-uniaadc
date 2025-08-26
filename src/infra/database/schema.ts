@@ -6,6 +6,8 @@ import {
   verification,
 } from './schemas/auth';
 import {
+  excludeRating,
+  excludeRatingRelations,
   rating,
   ratingRelations,
   regional,
@@ -22,6 +24,8 @@ const schema = {
   regionalRelations,
   rating,
   ratingRelations,
+  excludeRating,
+  excludeRatingRelations,
 };
 
 export { schema };

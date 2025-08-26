@@ -96,10 +96,10 @@ const generateDistrictData = (
       const allRatings = districtRatings.flatMap((rating) => rating.ratings);
 
       return {
+        ratings: allRatings,
+        averages,
         districtId: district.id,
         districtName: district.name,
-        averages,
-        ratings: allRatings,
         totalEvaluations: allRatings.length,
       };
     })
@@ -112,7 +112,7 @@ export function EvaluationCards({ data }: ListEvaluationsProps) {
   if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <Loader className="h-10 w-10 animate-spin text-black" />
+        <Loader className="h-10 w-10 animate-spin text-white" />
       </div>
     );
   }

@@ -124,6 +124,18 @@ export const ratingRelations = relations(rating, ({ one }) => ({
   }),
 }));
 
+export const excludeRatingRelations = relations(excludeRating, ({ one }) => ({
+  judge: one(user, {
+    fields: [excludeRating.judgeId],
+    references: [user.id],
+  }),
+  regional: one(regional, {
+    fields: [excludeRating.regionalId],
+    references: [regional.id],
+  }),
+}));
+
 export const regionalRelations = relations(regional, ({ many }) => ({
   ratings: many(rating),
+  excludeRatings: many(excludeRating),
 }));
