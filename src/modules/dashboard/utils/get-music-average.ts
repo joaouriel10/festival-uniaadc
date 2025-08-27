@@ -1,33 +1,8 @@
-import type { RatingsListItem } from '@/modules/rating/actions';
+import type { AveragesDTO } from '@/modules/rating/dtos/average-dto';
+import type { RatingsListItem } from '@/modules/rating/dtos/rating-dto';
 
 const calculateAverage = (values: number[], total: number) => {
   return total === 0 ? 0 : values.reduce((acc, curr) => acc + curr, 0) / total;
-};
-
-type Averages = {
-  totalAverage: number;
-  averageOriginalMusic: {
-    technical_level: number;
-    lyric_composition_coherence: number;
-    vocal_harmony: number;
-    vocal_tuning: number;
-  };
-  averageRegionalMusic: {
-    technical_level: number;
-    performanceCreativity: number;
-    vocal_harmony: number;
-    vocal_tuning: number;
-  };
-  instrumentalCategoryRegionalMusic: {
-    arrangement_coherence: number;
-    music_technical_level: number;
-    overall_performance: number;
-  };
-  instrumentalCategoryOriginalMusic: {
-    arrangement_coherence: number;
-    music_technical_level: number;
-    overall_performance: number;
-  };
 };
 
 const choralCategoryOriginalMusicKeys = [
@@ -58,12 +33,16 @@ const instrumentalCategoryOriginalMusicKeys = [
 
 export class GetMusicAverage {
   private ratings: RatingsListItem[];
-  private averages: Averages;
+  private averages: AveragesDTO;
 
   constructor(ratings: RatingsListItem[]) {
     this.ratings = ratings;
     this.averages = {
-      totalAverage: 0,
+      total: {
+        average: 0,
+        averageRegionalMusic: 0,
+        averageOriginalMusic: 0,
+      },
       averageOriginalMusic: {
         technical_level: 0,
         lyric_composition_coherence: 0,
@@ -89,11 +68,11 @@ export class GetMusicAverage {
     };
   }
 
-  getOriginalMusicAverage(): Averages['averageOriginalMusic'] {
+  getOriginalMusicAverage(): AveragesDTO['averageOriginalMusic'] {
     return this.averages.averageOriginalMusic;
   }
 
-  getRegionalMusicAverage(): Averages['averageRegionalMusic'] {
+  getRegionalMusicAverage(): AveragesDTO['averageRegionalMusic'] {
     return this.averages.averageRegionalMusic;
   }
 
@@ -146,12 +125,42 @@ export class GetMusicAverage {
         0
       );
 
-    this.averages.totalAverage = overallAverage / 14;
+    this.averages.total.average = overallAverage / 14;
+  }
+
+  getAverageRegionalMusic(): void {
+    const overallAverage =
+      Object.values(this.averages.averageRegionalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      ) +
+      Object.values(this.averages.instrumentalCategoryRegionalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+
+    this.averages.total.averageRegionalMusic = Number(overallAverage / 7);
+  }
+
+  getAverageOriginalMusic(): void {
+    const overallAverage =
+      Object.values(this.averages.averageOriginalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      ) +
+      Object.values(this.averages.instrumentalCategoryOriginalMusic).reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+
+    this.averages.total.averageOriginalMusic = Number(overallAverage / 7);
   }
 
   getAverages() {
     this.calculateAverage();
     this.getTotalAverage();
+    this.getAverageRegionalMusic();
+    this.getAverageOriginalMusic();
     return this.averages;
   }
 }

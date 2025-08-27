@@ -57,6 +57,20 @@
       "when": 1756151730404,
       "tag": "0007_first_namora",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1756315873712,
+      "tag": "0008_cute_strong_guy",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1756316029926,
+      "tag": "0009_slippery_morg",
+      "breakpoints": true
     }
   ]
 }

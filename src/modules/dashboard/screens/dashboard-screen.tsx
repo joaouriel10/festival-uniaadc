@@ -1,18 +1,38 @@
 import { Award, Medal, Trophy } from 'lucide-react';
 import { Badge } from '@/core/components/ui/badge';
 import { Card, CardContent } from '@/core/components/ui/card';
-import { getRatingsByRegional } from '@/modules/rating/actions';
+import type { UnifiedRankingItem } from '@/modules/rating/dtos/rating-dto';
 import { EvaluationCards } from '../components/evaluation-cards';
 
+const executeRequest = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.BETTER_AUTH_URL}/api/list-districts`,
+      {
+        next: {
+          tags: ['dashboard'],
+          revalidate: 60,
+        },
+      }
+    );
+    const data = (await response.json()) as UnifiedRankingItem[];
+
+    return { data, isSuccess: true };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return { data: [] as UnifiedRankingItem[], isSuccess: false };
+  }
+};
+
 export async function DashboardScreen() {
-  const data = await getRatingsByRegional();
+  const { data, isSuccess } = await executeRequest();
 
   return (
     <div className="relative mx-auto max-w-6xl p-40">
       <h1 className="mb-2 text-center font-bold text-4xl text-white lg:text-5xl">
         DASHBOARD DE RESULTADOS
       </h1>
-      {data.length ? (
+      {data.length || !isSuccess ? (
         <>
           <h2 className="mb-6 text-center font-bold text-2xl text-white">
             🏆 PÓDIO OFICIAL
@@ -29,10 +49,10 @@ export async function DashboardScreen() {
                 </div>
                 <h3 className="mb-2 font-bold text-xl">{data[1]?.name}</h3>
                 <p className="mb-1 font-bold text-4xl">
-                  {data[1]?.averages.overallAverage.toFixed(1)}
+                  {data[1]?.finalScore?.toFixed(1)}
                 </p>
                 <p className="text-sm opacity-80">
-                  {data[1]?.ratings.length} avaliações
+                  {data[1]?.ratingsCount} avaliações
                 </p>
               </CardContent>
             </Card>
@@ -47,10 +67,10 @@ export async function DashboardScreen() {
                 </div>
                 <h3 className="mb-2 font-bold text-xl">{data[0].name}</h3>
                 <p className="mb-1 font-bold text-4xl">
-                  {data[0].averages.overallAverage.toFixed(1)}
+                  {data[0].finalScore?.toFixed(1)}
                 </p>
                 <p className="text-sm opacity-80">
-                  {data[0].ratings.length} avaliações
+                  {data[0].ratingsCount} avaliações
                 </p>
               </CardContent>
             </Card>
@@ -65,10 +85,10 @@ export async function DashboardScreen() {
                 </div>
                 <h3 className="mb-2 font-bold text-xl">{data[2]?.name}</h3>
                 <p className="mb-1 font-bold text-4xl">
-                  {data[2]?.averages.overallAverage.toFixed(1)}
+                  {data[2]?.finalScore?.toFixed(1)}
                 </p>
                 <p className="text-sm opacity-80">
-                  {data[2]?.ratings.length} avaliações
+                  {data[2]?.ratingsCount} avaliações
                 </p>
               </CardContent>
             </Card>

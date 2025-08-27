@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { json, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, json, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { user } from './auth';
 
 export const regional = pgTable('regional', {
@@ -12,6 +12,32 @@ export const regional = pgTable('regional', {
     .notNull(),
   updatedAt: timestamp('updated_at')
     .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  penalty: json('penalty')
+    .notNull()
+    .$defaultFn(() => {
+      return JSON.stringify({
+        uniform: 0,
+        time_over: 0,
+        misconduct: 0,
+        ieadc_consuetude: 0,
+        musicians_is_not_sixty_percent_of_teens: 0,
+      });
+    }),
+  desqualification: json('desqualification')
+    .notNull()
+    .$defaultFn(() => {
+      return JSON.stringify({
+        members_are_invaders: false,
+        no_recommendation_letter: false,
+        singers_are_another_regional: false,
+        musicians_are_is_another_regional: false,
+        more_than_two_musicians_from_uniaadc_base: false,
+        members_of_general_backing_will_be_able_perform_solos_or_compose_regional_backing: false,
+      });
+    }),
+  verified: boolean('verified')
+    .$defaultFn(() => false)
     .notNull(),
 });
 

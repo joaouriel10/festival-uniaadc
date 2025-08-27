@@ -1,31 +1,12 @@
 'use client';
 
-import { Award, Loader, Medal, Star, Trophy } from 'lucide-react';
-import { Fragment } from 'react';
+import { Award, Medal, Star, Trophy } from 'lucide-react';
 import { Card, CardContent } from '@/core/components/ui/card';
-import type { DistrictsListItem } from '@/modules/districts/actions/list-districts';
-import { useDistricts } from '@/modules/districts/queries/get-districts';
-import type {
-  RatingsListItem,
-  RegionalRatingsItem,
-  RegionalRatingsResponse,
-} from '@/modules/rating/actions';
+import type { UnifiedRankingItem } from '@/modules/rating/dtos/rating-dto';
 import { EvaluationCard } from './evaluation-card';
 
 type ListEvaluationsProps = {
-  data: RegionalRatingsResponse;
-};
-
-export type EvaluationCardData = {
-  districtId: string;
-  districtName: string;
-  averages: {
-    regionalMusicAverage: number;
-    originalMusicAverage: number;
-    overallAverage: number;
-  };
-  ratings: RatingsListItem[];
-  totalEvaluations: number;
+  data: UnifiedRankingItem[];
 };
 
 const getRankIcon = (position: number) => {
@@ -56,82 +37,16 @@ const getRankGradient = (position: number) => {
   }
 };
 
-const calculateAverages = (ratings: RegionalRatingsItem[]) => {
-  if (ratings.length === 0) {
-    return {
-      regionalMusicAverage: 0,
-      originalMusicAverage: 0,
-      overallAverage: 0,
-    };
-  }
-
-  const totals = ratings.reduce(
-    (acc, rating) => ({
-      regionalMusicAverage:
-        acc.regionalMusicAverage + rating.averages.regionalMusicAverage,
-      originalMusicAverage:
-        acc.originalMusicAverage + rating.averages.originalMusicAverage,
-      overallAverage: acc.overallAverage + rating.averages.overallAverage,
-    }),
-    { regionalMusicAverage: 0, originalMusicAverage: 0, overallAverage: 0 }
-  );
-
-  return {
-    regionalMusicAverage: totals.regionalMusicAverage / ratings.length,
-    originalMusicAverage: totals.originalMusicAverage / ratings.length,
-    overallAverage: totals.overallAverage / ratings.length,
-  };
-};
-
-const generateDistrictData = (
-  districts: DistrictsListItem[],
-  ratingsData: RegionalRatingsResponse
-): EvaluationCardData[] => {
-  return districts
-    .map((district) => {
-      const districtRatings = ratingsData.filter(
-        (rating) => rating.regionalId === district.id
-      );
-      const averages = calculateAverages(districtRatings);
-      const allRatings = districtRatings.flatMap((rating) => rating.ratings);
-
-      return {
-        ratings: allRatings,
-        averages,
-        districtId: district.id,
-        districtName: district.name,
-        totalEvaluations: allRatings.length,
-      };
-    })
-    .sort((a, b) => b.averages.overallAverage - a.averages.overallAverage);
-};
-
 export function EvaluationCards({ data }: ListEvaluationsProps) {
-  const { data: districts, isLoading } = useDistricts();
-
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <Loader className="h-10 w-10 animate-spin text-white" />
-      </div>
-    );
-  }
-
-  if (!districts?.districts) {
-    return <Fragment />;
-  }
-
-  const districtData = generateDistrictData(districts.districts, data);
-
   return (
     <>
-      {districtData.map((district, index) => {
+      {data.map((unifiedDistrict, index) => {
         const position = index + 1;
 
         return (
           <Card
             className="border-0 bg-white/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:shadow-2xl"
-            key={district.districtId}
+            key={unifiedDistrict.id}
           >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -143,16 +58,16 @@ export function EvaluationCards({ data }: ListEvaluationsProps) {
                   </div>
                   <div>
                     <h3 className="font-bold text-festival-brown text-lg">
-                      {district.districtName}
+                      {unifiedDistrict.name}
                     </h3>
                     <p className="text-festival-brown/70 text-sm">
-                      {district.totalEvaluations > 0
-                        ? `${district.totalEvaluations} avaliações realizadas`
+                      {unifiedDistrict.ratingsCount > 0
+                        ? `${unifiedDistrict.ratingsCount} avaliações realizadas`
                         : 'Nenhuma avaliação realizada'}
                     </p>
                   </div>
                 </div>
-                <EvaluationCard evaluation={district} />
+                <EvaluationCard evaluation={unifiedDistrict} />
               </div>
             </CardContent>
           </Card>

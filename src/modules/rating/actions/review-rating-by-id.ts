@@ -1,8 +1,13 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
+import { revalidateTag } from 'next/cache';
 import { db } from '@/infra/database';
-import { excludeRating, rating } from '@/infra/database/schemas/others';
+import {
+  excludeRating,
+  rating,
+  regional,
+} from '@/infra/database/schemas/others';
 
 type ReviewRatingByRegionalIdProps = {
   regionalId: string;
@@ -106,10 +111,6 @@ export async function reviewRatingByRegionalId({
         db.insert(excludeRating).values(excludeRatingData),
         ...idsToDelete.map((id) => db.delete(rating).where(eq(rating.id, id))),
       ]);
-
-      console.log(
-        `Successfully moved ${ratingsBelowAverage.length} ratings below average to exclude_rating table`
-      );
     } catch (error) {
       console.error('Error moving ratings to exclude_rating:', error);
       throw new Error('Failed to move ratings below average to exclude table');
@@ -120,11 +121,21 @@ export async function reviewRatingByRegionalId({
     (ratingItem) => ratingItem.average >= overallAverage
   );
 
+  await db
+    .update(regional)
+    .set({
+      verified: true,
+    })
+    .where(eq(regional.id, regionalId));
+
+  revalidateTag('dashboard');
+
   return {
     ratings: remainingRatings,
     overallAverage,
     juryIdBelowAverage,
     movedToExclude: ratingsBelowAverage.length,
     remainingCount: remainingRatings.length,
+    verified: true,
   };
 }

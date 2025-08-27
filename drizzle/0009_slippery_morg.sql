@@ -1,0 +1,1 @@
+ALTER TABLE "regional" ADD COLUMN "verified" boolean;

@@ -1,4 +1,4 @@
-import type { RatingsListItem } from '@/modules/rating/actions';
+import type { RatingsListItem } from '@/modules/rating/dtos/rating-dto';
 import { GetMusicAverage } from '../../utils/get-music-average';
 
 type JuryEvaluationSectionProps = {
@@ -13,7 +13,7 @@ export function JuryEvaluationSection({ review }: JuryEvaluationSectionProps) {
     <div className="space-y-3 py-3">
       <div className="border-festival-coral border-l-4 pl-4">
         <p className="font-semibold">
-          Jurado: {review.judgeName} - {musicAverage.totalAverage.toFixed(1)}
+          Jurado: {review.judgeName} - {musicAverage.total.average.toFixed(1)}
         </p>
         <div className="mt-3 mb-3 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>

@@ -2,10 +2,10 @@
 
 import { Music, Trophy } from 'lucide-react';
 import type { ComponentProps } from 'react';
-import type { EvaluationCardData } from '../evaluation-cards';
+import type { UnifiedRankingItem } from '@/modules/rating/dtos/rating-dto';
 
 type PDFReportProps = ComponentProps<'div'> & {
-  evaluation: EvaluationCardData;
+  evaluation: UnifiedRankingItem;
 };
 
 export function PDFRelatorio({ evaluation, ref }: PDFReportProps) {
@@ -28,7 +28,7 @@ export function PDFRelatorio({ evaluation, ref }: PDFReportProps) {
               8ª Edição - Relatório de Avaliação
             </p>
             <p className="mt-2 font-semibold text-gray-800 text-lg">
-              {evaluation.districtName}
+              {evaluation.name}
             </p>
           </div>
         </div>
