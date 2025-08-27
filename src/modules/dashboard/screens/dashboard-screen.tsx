@@ -11,7 +11,6 @@ const executeRequest = async () => {
       {
         next: {
           tags: ['dashboard'],
-          revalidate: 60,
         },
       }
     );

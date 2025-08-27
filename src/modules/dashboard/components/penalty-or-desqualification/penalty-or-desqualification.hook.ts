@@ -32,7 +32,7 @@ export function usePenaltyOrDesqualificationForm({
   regional,
 }: UsePenaltyOrDesqualificationFormProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(regional);
+
   const form = useForm<PenaltyOrDesqualificationFormData>({
     resolver: zodResolver(penaltyOrDesqualificationSchema),
     defaultValues: {
@@ -99,8 +99,6 @@ export function usePenaltyOrDesqualificationForm({
       } else {
         toast.error(result.message);
       }
-
-      form.reset();
     } catch {
       toast.error('Erro inesperado ao salvar os ajustes');
     }

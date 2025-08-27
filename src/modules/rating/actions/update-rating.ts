@@ -1,6 +1,7 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
+import { revalidateTag } from 'next/cache';
 import { db } from '@/infra/database';
 import { rating } from '@/infra/database/schemas/others';
 
@@ -79,4 +80,6 @@ export async function updateRating(data: UpdateRatingData): Promise<void> {
       updatedAt: new Date(),
     })
     .where(eq(rating.id, id));
+
+  revalidateTag('dashboard');
 }

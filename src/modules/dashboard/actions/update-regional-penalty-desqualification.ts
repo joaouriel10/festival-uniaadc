@@ -1,6 +1,7 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
+import { revalidateTag } from 'next/cache';
 import { db } from '@/infra/database';
 import { regional } from '@/infra/database/schemas/others';
 
@@ -64,6 +65,7 @@ export async function updateRegionalPenaltyAndDesqualification({
       })
       .where(eq(regional.id, regionalId));
 
+    revalidateTag('dashboard');
     return {
       success: true,
       message: `Penalidades e desqualificações atualizadas para ${existingRegional.name}`,
