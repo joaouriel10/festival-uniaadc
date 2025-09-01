@@ -3,6 +3,7 @@
 import { Eye, FileText, RefreshCw } from 'lucide-react';
 import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
+import { toast } from 'sonner';
 import { Badge } from '@/core/components/ui/badge';
 import { Button } from '@/core/components/ui/button';
 import {
@@ -57,27 +58,29 @@ export function EvaluationCard({ evaluation }: EvaluationCardProps) {
 
   const handleReviewRatings = async () => {
     await reviewRatingByRegionalId({ regionalId: evaluation.id });
+    toast.success('Avaliações revisadas com sucesso!', {
+      description: 'As avaliações foram atualizadas com sucesso.',
+    });
   };
 
   return (
     <>
-      <div className="text-right">
-        <p className="font-bold text-3xl text-festival-coral">
-          {evaluation.finalScore}
-        </p>
-        <div className="mt-1 flex items-center gap-2">
-          <Badge className="text-xs" variant="outline">
-            Música Regional:{' '}
-            {evaluation.averages?.total.averageRegionalMusic.toFixed(1)}
-          </Badge>
-          <Badge className="text-xs" variant="outline">
-            Música Autoral:{' '}
-            {evaluation.averages?.total.averageOriginalMusic.toFixed(1)}
-          </Badge>
-          <Badge className="text-xs" variant="outline">
-            Punições: {evaluation.penalty.totalPenalty}
-          </Badge>
-          <div className="ml-2 flex gap-1">
+      <div className="flex w-full flex-col gap-2 text-center md:text-right">
+        <div className="mt-1 flex flex-col justify-between gap-4 md:flex-row">
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Badge className="text-xs" variant="outline">
+              Música Regional:{' '}
+              {evaluation.averages?.total.averageRegionalMusic.toFixed(1)}
+            </Badge>
+            <Badge className="text-xs" variant="outline">
+              Música Autoral:{' '}
+              {evaluation.averages?.total.averageOriginalMusic.toFixed(1)}
+            </Badge>
+            <Badge className="text-xs" variant="outline">
+              Punições: {evaluation.penalty.totalPenalty}
+            </Badge>
+          </div>
+          <div className="flex flex-col gap-1 md:flex-row">
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="bg-transparent" size="sm" variant="outline">

@@ -27,7 +27,7 @@ export async function DashboardScreen() {
   const { data, isSuccess } = await executeRequest();
 
   return (
-    <div className="relative mx-auto max-w-6xl p-40">
+    <div className="relative mx-auto max-w-6xl p-6 pb-40">
       <h1 className="mb-2 text-center font-bold text-4xl text-white lg:text-5xl">
         DASHBOARD DE RESULTADOS
       </h1>
@@ -96,7 +96,7 @@ export async function DashboardScreen() {
           <h2 className="mb-6 text-center font-bold text-2xl text-white">
             📊 CLASSIFICAÇÃO COMPLETA
           </h2>
-          <div className="grid gap-4">
+          <div className="mx-auto grid max-w-2xl gap-4">
             <EvaluationCards data={data} />
           </div>
         </>

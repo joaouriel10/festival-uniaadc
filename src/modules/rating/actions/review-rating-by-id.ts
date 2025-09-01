@@ -82,17 +82,13 @@ export async function reviewRatingByRegionalId({
       0
     ) / ratingsWithAverage.length;
 
-  console.log('Overall Average:', overallAverage);
-
   const ratingsBelowAverage = ratingsWithAverage.filter(
-    (ratingItem) => ratingItem.average < overallAverage
+    (ratingItem) => ratingItem.average < overallAverage - 2
   );
 
   const juryIdBelowAverage = ratingsBelowAverage.map(
     (ratingItem) => ratingItem.judgeId
   );
-
-  console.log('Jury IDs Below Average:', juryIdBelowAverage);
 
   if (ratingsBelowAverage.length > 0) {
     try {

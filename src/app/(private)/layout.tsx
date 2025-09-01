@@ -10,7 +10,7 @@ export default function AuthLayout({
   return (
     <div
       className={cn([
-        'relative grid h-screen grid-cols-1 grid-rows-[auto_1fr_auto] overflow-x-hidden',
+        'relative grid min-h-screen grid-cols-1 grid-rows-[auto_1fr_auto] overflow-x-hidden',
         'before:absolute before:inset-0 before:bg-[url(/logo-revestidos-preto.webp)] before:bg-center before:bg-contain before:bg-no-repeat before:opacity-15',
       ])}
       style={{

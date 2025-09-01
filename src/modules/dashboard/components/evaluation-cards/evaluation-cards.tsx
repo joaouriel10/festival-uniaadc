@@ -48,22 +48,27 @@ export function EvaluationCards({ data }: ListEvaluationsProps) {
             className="border-0 bg-white/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:shadow-2xl"
             key={unifiedDistrict.id}
           >
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+            <CardContent className="w-full px-10 py-6">
+              <div className="flex flex-col items-center justify-between md:items-start">
+                <div className="flex w-full items-center gap-4">
                   <div
-                    className={`h-12 w-12 rounded-full bg-gradient-to-br ${getRankGradient(position)} flex items-center justify-center`}
+                    className={`min-h-12 min-w-12 rounded-full bg-gradient-to-br ${getRankGradient(position)} flex items-center justify-center`}
                   >
                     {getRankIcon(position)}
                   </div>
-                  <div>
-                    <h3 className="font-bold text-festival-brown text-lg">
-                      {unifiedDistrict.name}
-                    </h3>
-                    <p className="text-festival-brown/70 text-sm">
-                      {unifiedDistrict.ratingsCount > 0
-                        ? `${unifiedDistrict.ratingsCount} avaliações realizadas`
-                        : 'Nenhuma avaliação realizada'}
+                  <div className="flex w-full items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-festival-brown text-lg">
+                        {unifiedDistrict.name}
+                      </h3>
+                      <p className="text-festival-brown/70 text-sm">
+                        {unifiedDistrict.ratingsCount > 0
+                          ? `${unifiedDistrict.ratingsCount} avaliações realizadas`
+                          : 'Nenhuma avaliação realizada'}
+                      </p>
+                    </div>
+                    <p className="font-bold text-3xl text-festival-coral">
+                      {unifiedDistrict.finalScore}
                     </p>
                   </div>
                 </div>
